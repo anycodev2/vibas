@@ -1,1 +1,14 @@
-<Solution />
+<Solution>
+  <Project Path="api/api.csproj">
+    <BuildDependency Project="shared/shared.csproj" />
+  </Project>
+  <Project Path="shared/shared.csproj" />
+  <Project Path="standalone/standalone.csproj">
+    <BuildDependency Project="shared/shared.csproj" />
+  </Project>
+  <Project Path="web.client/web.client.esproj">
+    <BuildDependency Project="api/api.csproj" />
+    <Build />
+    <Deploy />
+  </Project>
+</Solution>
