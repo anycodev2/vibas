@@ -4,9 +4,9 @@ namespace shared.Services
 {
     public abstract class VibFileService<T>
     {
-        protected readonly IVibSerializer Serializer;
+        protected readonly IVibSerializer<T> Serializer;
 
-        public VibFileService(IVibSerializer serializer)
+        public VibFileService(IVibSerializer<T> serializer)
         {
             Serializer = serializer;
         }

@@ -6,7 +6,7 @@ namespace shared.Services
 {
     public class VibDocumentService : VibFileService<VibDocument>
     {
-        public VibDocumentService(IVibSerializer serializer) : base(serializer) { }
+        public VibDocumentService(IVibSerializer<VibDocument> serializer) : base(serializer) { }
         
         public override void Close(VibDocument document)
             => throw new NotImplementedException();

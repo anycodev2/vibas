@@ -9,13 +9,13 @@ namespace Shared.Tests.Services
 {
     public class VibDocumentServiceTests : IDisposable
     {
-        private readonly Mock<IVibSerializer> _serializerMock;
+        private readonly Mock<IVibSerializer<VibDocument>> _serializerMock;
         private readonly VibDocumentService _service;
         private readonly List<string> _tempFiles;
 
         public VibDocumentServiceTests()
         {
-            _serializerMock = new Mock<IVibSerializer>();
+            _serializerMock = new Mock<IVibSerializer<VibDocument>>();
             _service = new VibDocumentService(_serializerMock.Object);
             _tempFiles = new List<string>();
         }
@@ -47,7 +47,7 @@ namespace Shared.Tests.Services
             var expectedDocument = new VibDocument("test.vib", path);
 
             _serializerMock
-                .Setup(s => s.Deserialize<VibDocument>(json))
+                .Setup(s => s.Deserialize(json))
                 .Returns(expectedDocument);
 
             // Act
@@ -56,7 +56,7 @@ namespace Shared.Tests.Services
             // Assert
             result.Should().NotBeNull();
             result.FilePath.Should().Be(path);
-            _serializerMock.Verify(s => s.Deserialize<VibDocument>(json), Times.Once);
+            _serializerMock.Verify(s => s.Deserialize(json), Times.Once);
         }
 
         [Fact]
@@ -187,7 +187,7 @@ namespace Shared.Tests.Services
             var statement = new StatementBlock();
             var connection = new VibConnection(start, statement)
             {
-                ConnectionType = VibConnectionType.Unconditional
+                Type = VibConnectionType.Unconditional
             };
 
             // Act

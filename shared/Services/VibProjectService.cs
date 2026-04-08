@@ -7,7 +7,7 @@ namespace shared.Services
     public class VibProjectService : VibFileService<VibProject>
     {
         private readonly VibDocumentService _documentService;
-        public VibProjectService(IVibSerializer serializer, VibDocumentService documentService) : base(serializer)
+        public VibProjectService(IVibSerializer<VibProject> serializer, VibDocumentService documentService) : base(serializer)
         {
             _documentService = documentService;
         }

@@ -9,14 +9,14 @@ namespace Shared.Tests.Services
 {
     public class VibProjectServiceTests : IDisposable
     {
-        private readonly Mock<IVibSerializer> _serializerMock;
+        private readonly Mock<IVibSerializer<VibProject>> _serializerMock;
         private readonly Mock<VibDocumentService> _docServiceMock;
         private readonly VibProjectService _service;
         private readonly List<string> _tempFiles;
 
         public VibProjectServiceTests()
         {
-            _serializerMock = new Mock<IVibSerializer>();
+            _serializerMock = new Mock<IVibSerializer<VibProject>>();
             _docServiceMock = new Mock<VibDocumentService>();
 
             _service = new VibProjectService(_serializerMock.Object, _docServiceMock.Object);
@@ -50,7 +50,7 @@ namespace Shared.Tests.Services
             var expectedProject = new VibProject("MyProject", path);
 
             _serializerMock
-                .Setup(s => s.Deserialize<VibProject>(json))
+                .Setup(s => s.Deserialize(json))
                 .Returns(expectedProject);
 
             // Act
@@ -59,7 +59,7 @@ namespace Shared.Tests.Services
             // Assert
             result.Should().NotBeNull();
             result.FilePath.Should().Be(path);
-            _serializerMock.Verify(s => s.Deserialize<VibProject>(json), Times.Once);
+            _serializerMock.Verify(s => s.Deserialize(json), Times.Once);
         }
 
         [Fact]
