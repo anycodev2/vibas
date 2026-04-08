@@ -7,8 +7,9 @@ namespace shared.Documents
         public VibBlock Source { get; set; }
         public VibBlock Destination { get; set; }
         public Guid Identifier { get; init; } = Guid.NewGuid();
-        public VibConnectionType ConnectionType { get; set; } = VibConnectionType.Unconditional;
+        public VibConnectionType Type { get; set; } = VibConnectionType.Unconditional;
 
+        public VibConnection() { }
         public VibConnection(VibBlock source, VibBlock destination)
         {
             Source = source;

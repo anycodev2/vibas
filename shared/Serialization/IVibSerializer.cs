@@ -1,8 +1,8 @@
 ﻿namespace shared.Serialization
 {
-    public interface IVibSerializer
+    public interface IVibSerializer<T>
     {
-        string Serialize(object obj);
-        T Deserialize<T>(string data);
+        string Serialize(T obj);
+        T Deserialize(string data);
     }
 }

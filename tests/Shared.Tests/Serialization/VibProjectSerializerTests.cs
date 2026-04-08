@@ -9,44 +9,28 @@ namespace Shared.Tests.Serialization
 {
     public class VibProjectSerializerTests
     {
-        private readonly VibProjectSerializer _serializer;
-
-        public VibProjectSerializerTests()
-        {
-            _serializer = new VibProjectSerializer();
-        }
-
-        // --- Serialization Tests ---
+        private readonly VibProjectSerializer _serializer = new();
 
         [Fact]
-        public void Serializer_ShouldReturnValidJson_WithMetadataAndDocumentPaths()
+        public void Serialize_ShouldReturnValidJson_WithMetadataAndDocumentPaths()
         {
-            // Arrange
             var project = new VibProject("MyProject", "C:/projects/test.vibproj")
             {
                 Version = "1.2.3"
             };
+            project.Documents.Add(new VibDocument("algo1.vib", "C:/projects/algorithms/algo1.vib"));
+            project.Documents.Add(new VibDocument("algo2.vib", "C:/projects/algorithms/algo2.vib"));
 
-            var doc1 = new VibDocument("algo1.vib", "C:/projects/algorithms/algo1.vib");
-            var doc2 = new VibDocument("algo2.vib", "C:/projects/algorithms/algo2.vib");
+            var json = _serializer.Serialize(project);
+            var node = JsonNode.Parse(json);
 
-            project.Documents.Add(doc1);
-            project.Documents.Add(doc2);
+            node.Should().NotBeNull();
+            node!["name"]!.GetValue<string>().Should().Be("MyProject");
+            node["version"]!.GetValue<string>().Should().Be("1.2.3");
 
-            // Act
-            var jsonString = _serializer.Serializer(project);
-            var jsonNode = JsonNode.Parse(jsonString);
-
-            // Assert
-            jsonNode.Should().NotBeNull();
-            jsonNode!["name"]?.GetValue<string>().Should().Be("MyProject");
-            jsonNode["version"]?.GetValue<string>().Should().Be("1.2.3");
-
-            var docsArray = jsonNode["documents"]?.AsArray();
-            docsArray.Should().NotBeNull();
-            docsArray!.Count.Should().Be(2);
-
-            docsArray.Select(x => x!.GetValue<string>()).Should().Contain(new[]
+            var docs = node["documents"]!.AsArray();
+            docs.Should().HaveCount(2);
+            docs.Select(x => x!.GetValue<string>()).Should().BeEquivalentTo(new[]
             {
                 "C:/projects/algorithms/algo1.vib",
                 "C:/projects/algorithms/algo2.vib"
@@ -54,86 +38,162 @@ namespace Shared.Tests.Serialization
         }
 
         [Fact]
-        public void Serializer_ShouldThrowArgumentNullException_WhenProjectIsNull()
+        public void Serialize_ShouldThrowArgumentNullException_WhenProjectIsNull()
         {
-            // Act & Assert
-            Assert.Throws<ArgumentNullException>(() => _serializer.Serializer(null!));
+            Action act = () => _serializer.Serialize(null!);
+            act.Should().Throw<ArgumentNullException>();
         }
 
-        // --- Deserialization Tests ---
+        [Fact]
+        public void Serialize_ShouldProduceEmptyDocumentsArray_WhenProjectHasNoDocuments()
+        {
+            var project = new VibProject("EmptyProject", "path/empty.vibproj");
+
+            var json = _serializer.Serialize(project);
+            var node = JsonNode.Parse(json);
+
+            node!["documents"]!.AsArray().Should().BeEmpty();
+        }
 
         [Fact]
-        public void DeSerialize_ShouldCreateProjectWithCorrectMetadata()
+        public void Serialize_ShouldSkipDocuments_WithNullOrEmptyFilePath()
         {
-            // Arrange plik.vibproj
-            var json = @"
+            var project = new VibProject("Project", "path/p.vibproj");
+            project.Documents.Add(new VibDocument("valid.vib", "path/to/valid.vib"));
+            project.Documents.Add(new VibDocument("no-path.vib", null!));
+            project.Documents.Add(new VibDocument("empty.vib", ""));
+
+            var json = _serializer.Serialize(project);
+            var node = JsonNode.Parse(json);
+
+            var docs = node!["documents"]!.AsArray();
+            docs.Should().HaveCount(1);
+            docs[0]!.GetValue<string>().Should().Be("path/to/valid.vib");
+        }
+
+        [Fact]
+        public void Serialize_ShouldProducePathsOnly_NotEmbeddedDocumentContent()
+        {
+            var project = new VibProject("P", "p.vibproj");
+            project.Documents.Add(new VibDocument("doc.vib", "docs/doc.vib"));
+
+            var json = _serializer.Serialize(project);
+            var node = JsonNode.Parse(json);
+
+            var firstDoc = node!["documents"]!.AsArray()[0];
+
+            firstDoc!.GetValueKind().Should().Be(JsonValueKind.String);
+        }
+
+        [Fact]
+        public void Deserialize_ShouldCreateProjectWithCorrectMetadata()
+        {
+            var json = """
             {
-                ""name"": ""ImportedProject"",
-                ""version"": ""2.0"",
-                ""documents"": [
-                    ""folder/doc1.vib"",
-                    ""folder/doc2.vib""
+                "name": "ImportedProject",
+                "version": "2.0",
+                "documents": [
+                    "folder/doc1.vib",
+                    "folder/doc2.vib"
                 ]
-            }";
+            }
+            """;
 
-            // Act
-            var project = _serializer.DeSerialize(json);
+            var project = _serializer.Deserialize(json);
 
-            // Assert
             project.Should().NotBeNull();
             project.FileName.Should().Be("ImportedProject");
             project.Version.Should().Be("2.0");
             project.Documents.Should().HaveCount(2);
+        }
+
+        [Fact]
+        public void Deserialize_ShouldSetDocumentFilePaths_FromJsonArray()
+        {
+            var json = """
+            {
+                "name": "P",
+                "version": "1.0",
+                "documents": ["folder/doc1.vib", "folder/doc2.vib"]
+            }
+            """;
+
+            var project = _serializer.Deserialize(json);
 
             project.Documents[0].FilePath.Should().Be("folder/doc1.vib");
             project.Documents[1].FilePath.Should().Be("folder/doc2.vib");
         }
 
+        [Fact]
+        public void Deserialize_ShouldDeriveDocumentFileName_FromFilePath()
+        {
+            var json = """
+            {
+                "name": "P",
+                "version": "1.0",
+                "documents": ["folder/subfolder/algo1.vib"]
+            }
+            """;
+
+            var project = _serializer.Deserialize(json);
+
+            project.Documents[0].FileName.Should().Be("algo1.vib");
+        }
+
+        [Fact]
+        public void Deserialize_ShouldReturnEmptyDocumentsList_WhenArrayIsEmpty()
+        {
+            var json = """
+            {
+                "name": "P",
+                "version": "1.0",
+                "documents": []
+            }
+            """;
+
+            var project = _serializer.Deserialize(json);
+
+            project.Documents.Should().BeEmpty();
+        }
+
         [Theory]
         [InlineData("")]
         [InlineData("   ")]
-        [InlineData("invalid-json")]
-        public void DeSerialize_ShouldThrowJsonException_WhenJsonIsMalformed(string invalidJson)
+        [InlineData("not-json-at-all")]
+        [InlineData("{invalid}")]
+        public void Deserialize_ShouldThrow_WhenJsonIsMalformed(string bad)
         {
-            // Act & Assert
-            Assert.ThrowsAny<JsonException>(() => _serializer.DeSerialize(invalidJson));
-        }
-
-        // --- Edge Cases ---
-
-        [Fact]
-        public void Serializer_ShouldHandleProjectWithNoDocuments()
-        {
-            // Arrange
-            var project = new VibProject("EmptyProject", "path");
-
-            // Act
-            var jsonString = _serializer.Serializer(project);
-            var jsonNode = JsonNode.Parse(jsonString);
-
-            // Assert
-            jsonNode!["documents"]?.AsArray().Should().BeEmpty();
+            Action act = () => _serializer.Deserialize(bad);
+            act.Should().ThrowExactly<JsonException>();
         }
 
         [Fact]
-        public void Serializer_ShouldIgnoreDocumentsWithoutFilePath()
+        public void Deserialize_ShouldThrow_WhenRequiredFieldNameIsMissing()
         {
-            // Arrange
-            var project = new VibProject("Project", "path");
-            var validDoc = new VibDocument("valid", "path/to/doc.vib");
-            var invalidDoc = new VibDocument("invalid", null);
+            var json = """{ "version": "1.0", "documents": [] }""";
 
-            project.Documents.Add(validDoc);
-            project.Documents.Add(invalidDoc);
+            Action act = () => _serializer.Deserialize(json);
+            act.Should().Throw<Exception>();
+        }
 
-            // Act
-            var jsonString = _serializer.Serializer(project);
-            var jsonNode = JsonNode.Parse(jsonString);
+        [Fact]
+        public void RoundTrip_ShouldPreserveAllFields()
+        {
+            var original = new VibProject("RoundTripProject", "rt.vibproj")
+            {
+                Version = "3.1.4"
+            };
+            original.Documents.Add(new VibDocument("a.vib", "docs/a.vib"));
+            original.Documents.Add(new VibDocument("b.vib", "docs/b.vib"));
 
-            // Assert
-            var docsArray = jsonNode!["documents"]?.AsArray();
-            docsArray!.Count.Should().Be(1);
-            docsArray[0]!.GetValue<string>().Should().Be("path/to/doc.vib");
+            var json = _serializer.Serialize(original);
+            var restored = _serializer.Deserialize(json);
+
+            restored.FileName.Should().Be(original.FileName);
+            restored.Version.Should().Be(original.Version);
+            restored.Documents.Should().HaveCount(original.Documents.Count);
+            restored.Documents.Select(d => d.FilePath)
+                    .Should().BeEquivalentTo(original.Documents.Select(d => d.FilePath));
         }
     }
 }

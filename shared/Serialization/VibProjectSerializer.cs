@@ -1,24 +1,25 @@
 ﻿using System.Text.Json.Nodes;
+using shared.Documents;
 using shared.Projects;
 
 namespace shared.Serialization
 {
-    public class VibProjectSerializer
+    public class VibProjectSerializer : IVibSerializer<VibProject>
     {
         public VibProjectSerializer()
             => throw new NotImplementedException();
 
-        public string Serializer(VibProject project) 
+        public string Serialize(VibProject project) 
             => throw new NotImplementedException();
-        public VibProject DeSerialize(string data) 
+        public VibProject Deserialize(string data) 
             => throw new NotImplementedException();
         private JsonObject SerializeMetadata(VibProject project) 
             => throw new NotImplementedException();
         private JsonArray SerializeDocuments(VibProject project) 
             => throw new NotImplementedException();
-        private void DeSerializeMetaData(JsonObject metadata) 
+        private string DeSerializeMetaData(JsonObject metadata) 
             => throw new NotImplementedException();
-        private void DeSerializeDocuments(JsonArray documents) 
+        private List<VibDocument> DeSerializeDocuments(JsonArray documents) 
             => throw new NotImplementedException();
     }
 }
