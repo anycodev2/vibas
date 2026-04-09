@@ -273,7 +273,7 @@ namespace Shared.Tests.Serialization
         {
             var json = """
             {
-                "FileName": "doc.vib", "Version": "1.0",
+                "name": "doc.vib", "version": "1.0",
                 "blocks": [
                     {
                         "$type": "StartBlock",
