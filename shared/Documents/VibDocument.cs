@@ -12,8 +12,7 @@ namespace shared.Documents
         public List<VibBlock> Blocks { get; init; } = new List<VibBlock>();
         public List<VibConnection> Connections { get; init; } = new List<VibConnection>();
 
-        public VibDocument(string? fileName = null, string? filePath = null) 
-            => throw new NotImplementedException();
+        public VibDocument(string? fileName = null, string? filePath = null) {}
 
         public bool HasValidName()
             => throw new NotImplementedException();
