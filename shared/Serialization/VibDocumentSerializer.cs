@@ -8,8 +8,7 @@ namespace shared.Serialization
 {
     public class VibDocumentSerializer : IVibSerializer<VibDocument>
     {
-        public VibDocumentSerializer()
-            => throw new NotImplementedException();
+        public VibDocumentSerializer() {}
 
         public string Serialize(VibDocument document)
             => throw new NotImplementedException();
