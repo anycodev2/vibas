@@ -16,11 +16,12 @@ namespace shared.Serialization
         {
             var options = new JsonSerializerOptions
             {
-                PropertyNameCaseInsensitive = true
+                PropertyNameCaseInsensitive = true,
             };
 
-            return JsonSerializer.Deserialize<VibDocument>(data, options)
-                ?? throw new InvalidOperationException("Deseralization failed");
+            VibDocument? doc = JsonSerializer.Deserialize<VibDocument>(data, options);
+
+            return doc;
         }
         private JsonObject SerializeBlocks(List<VibBlock> blocks)
             => throw new NotImplementedException();
