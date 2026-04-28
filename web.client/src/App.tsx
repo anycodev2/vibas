@@ -1,12 +1,18 @@
-import "./App.css";
+import { createTheme, MantineProvider } from "@mantine/core";
+import { RouterProvider } from "@tanstack/react-router";
 
-function App() {
+import { router } from "./router";
+
+const theme = createTheme({
+  primaryColor: "blue",
+  fontFamily:
+    'Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+});
+
+export function App() {
   return (
-    <div className="hero">
-          <h1>siema😛</h1>
-          <h3>Pozdrawiam Pilar :D</h3>
-    </div>
+    <MantineProvider theme={theme} defaultColorScheme="light">
+      <RouterProvider router={router} />
+    </MantineProvider>
   );
 }
-
-export default App;
