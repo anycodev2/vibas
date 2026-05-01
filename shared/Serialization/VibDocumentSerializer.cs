@@ -21,7 +21,14 @@ namespace shared.Serialization
 
             VibDocument? doc = JsonSerializer.Deserialize<VibDocument>(data, options);
 
-            return doc;
+            if (doc == null)
+            {
+                throw new JsonException("Deserializacja zakończyła się niepowodzeniem");
+            }
+            else
+            {
+                return doc;
+            }
         }
         private JsonObject SerializeBlocks(List<VibBlock> blocks)
             => throw new NotImplementedException();
