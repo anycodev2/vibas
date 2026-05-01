@@ -156,8 +156,8 @@ namespace Shared.Tests.Serialization
             doc.Connections.Add(new VibConnection
             {
                 Identifier = Guid.NewGuid(),
-                Source = source,
-                Destination = destination,
+                Source = source.Identifier,
+                Destination = destination.Identifier,
                 Type = VibConnectionType.Unconditional
             });
 
@@ -180,8 +180,8 @@ namespace Shared.Tests.Serialization
                 doc.Connections.Add(new VibConnection
                 {
                     Identifier = Guid.NewGuid(),
-                    Source = source,
-                    Destination = destination,
+                    Source = source.Identifier,
+                    Destination = destination.Identifier,
                     Type = type
                 });
 
@@ -397,15 +397,15 @@ namespace Shared.Tests.Serialization
             doc.Connections.Add(new VibConnection
             {
                 Identifier = Guid.NewGuid(),
-                Source = start,
-                Destination = stmt,
+                Source = start.Identifier,
+                Destination = stmt.Identifier,
                 Type = VibConnectionType.Unconditional
             });
             doc.Connections.Add(new VibConnection
             {
                 Identifier = Guid.NewGuid(),
-                Source = stmt,
-                Destination = stop,
+                Source = stmt.Identifier,
+                Destination = stop.Identifier,
                 Type = VibConnectionType.Unconditional
             });
 

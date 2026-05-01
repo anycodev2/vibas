@@ -17,7 +17,8 @@ namespace shared.Serialization
         {
             var options = new JsonSerializerOptions
             {
-                PropertyNameCaseInsensitive = true
+                PropertyNameCaseInsensitive = true,
+                Converters = { new JsonStringEnumConverter() }
             };
 
             VibDocument? doc = JsonSerializer.Deserialize<VibDocument>(data, options);
