@@ -14,7 +14,12 @@ namespace shared.Serialization
 
         public string Serialize(VibDocument document)
         {
-            string json = JsonSerializer.Serialize(document);
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            };
+
+            string json = JsonSerializer.Serialize(document, options);
 
             return json;
         }
