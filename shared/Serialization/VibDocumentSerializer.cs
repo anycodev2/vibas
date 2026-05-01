@@ -31,12 +31,19 @@ namespace shared.Serialization
                 Converters = { new JsonStringEnumConverter() }
             };
 
-            VibDocument? doc = JsonSerializer.Deserialize<VibDocument>(data, options);
+            try 
+            {
+                VibDocument? doc = JsonSerializer.Deserialize<VibDocument>(data, options);
 
-            if (doc == null)
-                throw new JsonException("Deserializacja zakończyła się niepowodzeniem");
+                if (doc == null)
+                    throw new JsonException("Deserialization returned null for VibDocument. Input may be 'null' or empty.");
 
-            return doc;
+                return doc;
+            }
+            catch(JsonException exception) 
+            {
+                throw new JsonException($"Failed to deserialize VibDocument: {exception.Message}");
+            }
         }
         private JsonObject SerializeBlocks(List<VibBlock> blocks)
             => throw new NotImplementedException();
