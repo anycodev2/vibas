@@ -26,6 +26,8 @@ namespace shared.Blocks.Base
         [JsonExtensionData]
         public Dictionary<string, JsonElement>? ExtensionData { get; set; }
 
+        protected VibBlock() { }
+
         protected VibBlock(BlockType type)
         {
             Type = type;

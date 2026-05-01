@@ -9,8 +9,8 @@ namespace shared.Documents
         public bool isModified { get; set; }
         public string? Version { get; set; }
         public Guid Identifier { get; init; } = Guid.NewGuid();
-        public List<VibBlock> Blocks { get; init; } = new List<VibBlock>();
-        public List<VibConnection> Connections { get; init; } = new List<VibConnection>();
+        public List<VibBlock> Blocks { get; set; } = new List<VibBlock>();
+        public List<VibConnection> Connections { get; set; } = new List<VibConnection>();
 
         public VibDocument(string? fileName = null, string? filePath = null) {}
 

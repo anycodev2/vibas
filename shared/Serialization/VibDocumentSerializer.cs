@@ -3,6 +3,7 @@ using shared.Documents;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
 
 namespace shared.Serialization
 {
@@ -16,20 +17,15 @@ namespace shared.Serialization
         {
             var options = new JsonSerializerOptions
             {
-                PropertyNameCaseInsensitive = true,
+                PropertyNameCaseInsensitive = true
             };
 
             VibDocument? doc = JsonSerializer.Deserialize<VibDocument>(data, options);
 
             if (doc == null)
-            {
-                // Niech narazie będzie tak
                 throw new JsonException("Deserializacja zakończyła się niepowodzeniem");
-            }
-            else
-            {
-                return doc;
-            }
+
+            return doc;
         }
         private JsonObject SerializeBlocks(List<VibBlock> blocks)
             => throw new NotImplementedException();
