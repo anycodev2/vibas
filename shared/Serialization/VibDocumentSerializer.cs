@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using System.Text.Json.Serialization.Metadata;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace shared.Serialization
 {
@@ -12,7 +13,11 @@ namespace shared.Serialization
         public VibDocumentSerializer() {}
 
         public string Serialize(VibDocument document)
-            => throw new NotImplementedException();
+        {
+            string json = JsonSerializer.Serialize(document);
+
+            return json;
+        }
         public VibDocument Deserialize(string data)
         {
             var options = new JsonSerializerOptions
