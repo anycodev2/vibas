@@ -18,10 +18,14 @@ namespace shared.Services
             => throw new NotImplementedException();
 
         public void AddBlock(VibDocument document, VibBlock block)
-            => throw new NotImplementedException();
+        {
+            document.Blocks.Add(block);
+        }
 
         public void RemoveBlock(VibDocument document, VibBlock block)
-            => throw new NotImplementedException();
+        {
+            document.Blocks.Remove(block);
+        }
 
         public void AddConnection(VibDocument document, VibConnection connection)
             => throw new NotImplementedException();
