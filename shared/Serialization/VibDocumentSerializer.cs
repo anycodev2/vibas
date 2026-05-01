@@ -23,6 +23,7 @@ namespace shared.Serialization
 
             if (doc == null)
             {
+                // Niech narazie będzie tak
                 throw new JsonException("Deserializacja zakończyła się niepowodzeniem");
             }
             else
