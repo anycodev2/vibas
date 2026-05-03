@@ -21,6 +21,8 @@ namespace shared.Serialization
 
             string json = JsonSerializer.Serialize(document, options);
 
+            ArgumentNullException.ThrowIfNull(document);
+
             return json;
         }
         public VibDocument Deserialize(string data)
