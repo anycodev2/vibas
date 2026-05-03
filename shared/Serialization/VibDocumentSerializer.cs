@@ -19,6 +19,8 @@ namespace shared.Serialization
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             };
 
+            options.Converters.Add(new JsonStringEnumConverter());
+
             string json = JsonSerializer.Serialize(document, options);
 
             ArgumentNullException.ThrowIfNull(document);
