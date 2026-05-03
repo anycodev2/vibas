@@ -1,12 +1,16 @@
 ﻿using shared.Blocks.Base;
+using System.Text.Json.Serialization;
 
 namespace shared.Documents
 {
     public class VibDocument
     {
         public string? FileName { get; set; }
+        [JsonPropertyName("name")]
         public string? FilePath { get; set; }
+        [JsonPropertyName("path")]
         public bool isModified { get; set; }
+        [JsonIgnore]
         public string? Version { get; set; }
         public Guid Identifier { get; init; } = Guid.NewGuid();
         public List<VibBlock> Blocks { get; init; } = new List<VibBlock>();
