@@ -1,10 +1,14 @@
 ﻿using shared.Documents;
 using System.IO;
+using System.Text.Json.Serialization;
+
 namespace shared.Projects
 {
     public class VibProject
     {
+        [JsonPropertyName("name")]
         public string? FileName { get; set; }
+        [JsonPropertyName("path")]
         public string? FilePath { get; set; }
         public string? Version { get; set; }
         public List<VibDocument> Documents { get; }
