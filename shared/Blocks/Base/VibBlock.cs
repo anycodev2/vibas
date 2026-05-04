@@ -12,7 +12,6 @@ namespace shared.Blocks.Base
     /// system. It provides a unique identifier, a block type, and supports extension data for additional properties not
     /// defined in the base class. The extension data enables forward compatibility and flexible serialization
     /// scenarios.</remarks>
-    
     [JsonPolymorphic(TypeDiscriminatorPropertyName = "$type")]
     [JsonDerivedType(typeof(StartBlock), typeDiscriminator: "StartBlock")]
     [JsonDerivedType(typeof(StopBlock), typeDiscriminator: "StopBlock")]
@@ -26,6 +25,8 @@ namespace shared.Blocks.Base
 
         [JsonExtensionData]
         public Dictionary<string, JsonElement>? ExtensionData { get; set; }
+
+        protected VibBlock() { }
 
         protected VibBlock(BlockType type)
         {

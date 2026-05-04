@@ -195,8 +195,8 @@ namespace Shared.Tests.Services
 
             // Assert
             document.Connections.Should().Contain(connection);
-            connection.Source.Should().Be(start);
-            connection.Destination.Should().Be(statement);
+            connection.Source.Should().Be(start.Identifier);
+            connection.Destination.Should().Be(statement.Identifier);
         }
 
         [Fact]
