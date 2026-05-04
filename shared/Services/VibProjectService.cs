@@ -13,21 +13,56 @@ namespace shared.Services
         }
 
         public override void Close(VibProject project)
-            => throw new NotImplementedException();
+        {
+
+        }
 
         public override VibProject Open(string filePath)
-            => throw new NotImplementedException();
+        {
+            if (!System.IO.File.Exists(filePath))
+                throw new System.IO.FileNotFoundException();
+
+            var content = System.IO.File.ReadAllText(filePath);
+            var project = Serializer.Deserialize(content);
+            project.FilePath = filePath;
+
+            return project;
+        }
 
         public override void Save(VibProject project)
-            => throw new NotImplementedException();
+        {
+            if (project == null) 
+                throw new ArgumentException(nameof(project));
+
+            var content = Serializer.Serialize(project);
+            System.IO.File.WriteAllText(project.FilePath, content);
+        }
 
         public void AddDocument(VibProject project, VibDocument document)
-            => throw new NotImplementedException();
+        {
+            if (project == null) 
+                throw new ArgumentNullException(nameof(project));
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+            project.Documents.Add(document);
+        }
 
         public void RemoveDocument(VibProject project, VibDocument document)
-            => throw new NotImplementedException();
+        {
+            project.Documents.Remove(document);
+        }
 
         public VibDocument GetDocument(VibProject project, Guid documentId)
-            => throw new NotImplementedException();
+        {
+            if (project == null || project.Documents == null) 
+                throw new KeyNotFoundException();
+
+            var document = project.Documents.FirstOrDefault(d => d.Identifier == documentId);
+
+            if (document == null)
+                throw new KeyNotFoundException();
+
+            return document;
+        }
     }
 }

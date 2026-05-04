@@ -8,9 +8,4 @@
   </Project>
   <Project Path="tests/Api.Tests/Api.Tests.csproj" Id="b44e53c8-f32f-46fa-8396-054baa4d66ae" />
   <Project Path="tests/Shared.Tests/Shared.Tests.csproj" Id="a99f3023-574c-4b8e-a7e3-a37cfc2484cf" />
-  <Project Path="web.client/web.client.esproj">
-    <BuildDependency Project="api/api.csproj" />
-    <Build />
-    <Deploy />
-  </Project>
 </Solution>
