@@ -15,13 +15,16 @@ namespace shared.Documents
         public Guid Identifier { get; init; } = Guid.NewGuid();
         public List<VibBlock> Blocks { get; init; } = new List<VibBlock>();
         public List<VibConnection> Connections { get; init; } = new List<VibConnection>();
-        //
-        //This is almost the same as in VibProject, but for documents.
-        //
-        public VibDocument(string? fileName = null, string? filePath = null)
+
+        /// <summary>
+        /// Initializes a new instance of the VibDocument class with the specified file name and file path.
+        /// </summary>
+        /// <param name="fileName">The name of the document file to associate with this instance. Can be null if not specified.</param>
+        /// <param name="filePath">The full path to the document file. Can be null if not specified.</param>
+
+        public VibDocument(String? fileName = null, String? filePath = null)
         {
-            // This code checks if the file name is null or whitespace, and if so, it sets the FileName property to null.
-            if (string.IsNullOrWhiteSpace(fileName))
+            if (String.IsNullOrWhiteSpace(fileName))
             {
                 FileName = null;
             }
@@ -32,24 +35,23 @@ namespace shared.Documents
             FilePath = filePath;
             isModified = false;
         }
+
         public bool HasValidName()
         {
-            // This class checks if the name of the project file is invalid 
-
-            if (string.IsNullOrEmpty(FileName))
+            if (String.IsNullOrEmpty(FileName))
                 return false;
             var name = FileName.Trim();
-            //if the name is empty or longer than 128 characters, it's invalid
+            //If the name is empty or longer than 128 characters, it's invalid
             if (name.Length == 0 || name.Length > 128)
                 return false;
-            //if the name contains any invalid characters, it's invalid
+            //If the name contains any invalid characters, it's invalid
             if (name.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0)
                 return false;
             var baseName = Path.GetFileNameWithoutExtension(name).Trim('.').ToUpperInvariant();
-            // if name have only dots, it's invalid
+            //If name have only dots, it's invalid
             if (baseName.Trim('.').Length == 0)
                 return false;
-            // if the name is a reserved name, it's invalid
+            //If the name is a reserved name, it's invalid
             var reserved = new[]
             {
                 "CON", "PRN", "AUX", "NUL",

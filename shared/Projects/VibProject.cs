@@ -1,5 +1,4 @@
 ﻿using shared.Documents;
-using System.IO;
 using System.Text.Json.Serialization;
 
 namespace shared.Projects
@@ -18,11 +17,11 @@ namespace shared.Projects
         /// </summary>
         /// <param name="fileName">The name of the project file to associate with this instance. Can be null if not specified.</param>
         /// <param name="filePath">The full path to the project file. Can be null if not specified.</param>
-        public VibProject(string? fileName = null, string? filePath = null)
+        public VibProject(String? fileName = null, String? filePath = null)
         {
             // If the FileName is Test, the constructor will add the extension if it's missing. 
             // then the filename will be Test.vibproj
-            if (string.IsNullOrWhiteSpace(fileName))
+            if (String.IsNullOrWhiteSpace(fileName))
             {
                 FileName = null;
             }
@@ -47,18 +46,18 @@ namespace shared.Projects
         public bool HasValidName()
         {
             // This class checks if the name of the project file is invalid 
-            if (string.IsNullOrWhiteSpace(FileName))
+            if (String.IsNullOrWhiteSpace(FileName))
                 return false;
             var name = FileName.Trim();
-            //if the name is empty or longer than 128 characters, it's invalid
+            //If the name is empty or longer than 128 characters, it's invalid
             if (name.Length == 0 || name.Length > 128) return false;
-            //if the name contains any invalid characters, it's invalid
+            //If the name contains any invalid characters, it's invalid
             if (name.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0) return false;
             var baseName = Path.GetFileNameWithoutExtension(name).ToUpperInvariant();
-            // if name have only dots, it's invalid
+            //If name have only dots, it's invalid
             if (baseName.Trim('.').Length == 0) return false;
 
-            // if the name is a reserved name, it's invalid
+            //If the name is a reserved name, it's invalid
             var reserved = new[]
             {
                 "CON", "PRN", "AUX", "NUL",
