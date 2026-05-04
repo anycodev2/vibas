@@ -1,0 +1,94 @@
+.stn-wrapper {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-family: Arial, sans-serif;
+  z-index: 9999;
+  pointer-events: none; /* nie blokuje interakcji strony */
+}
+
+.turtle-container {
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.turtle {
+  position: relative;
+  width: 110px;
+  height: 110px;
+  transform-origin: 50% 50%;
+  animation: spin 3s linear infinite;
+}
+
+.turtle-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 12px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.shell {
+  width: 110px;
+  height: 110px;
+  background: radial-gradient(circle at 40% 30%, #6dbb6d, #3a8a3a);
+  border-radius: 50%;
+  box-shadow: inset -6px -8px 0 rgba(0,0,0,0.12);
+}
+
+.head {
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  background: #7bd47b;
+  border-radius: 50%;
+  left: 6px;
+  top: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mask {
+  position: absolute;
+  width: 64%;
+  height: 18%;
+  background: #111;
+  top: 36%;
+  border-radius: 4px;
+}
+
+.eye {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #fff;
+  border-radius: 50%;
+  top: 30%;
+}
+
+.eye.left { left: 22%; }
+.eye.right { right: 22%; }
+
+.caption {
+  color: #333;
+  font-size: 14px;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

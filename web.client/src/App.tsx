@@ -2,6 +2,7 @@ import { createTheme, MantineProvider } from "@mantine/core";
 import { RouterProvider } from "@tanstack/react-router";
 
 import { router } from "./router";
+import SpinningTurtleNinja from "./components/SpinningTurtleNinja";
 
 const theme = createTheme({
   primaryColor: "blue",
@@ -13,6 +14,7 @@ export function App() {
   return (
     <MantineProvider theme={theme} defaultColorScheme="light">
       <RouterProvider router={router} />
+      <SpinningTurtleNinja />
     </MantineProvider>
   );
 }
