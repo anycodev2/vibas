@@ -14,7 +14,7 @@ namespace Shared.Tests.Serialization
         [Fact]
         public void Serialize_ShouldReturnValidJson_WithNameVersionBlocksConnections()
         {
-            var doc = new VibDocument("algo.vib", "path/algo.vib");
+            var doc = new VibDocument("algo.vib", "path/algo.vib", "v0.05");
 
             var json = _serializer.Serialize(doc);
             var node = JsonNode.Parse(json);
@@ -156,8 +156,8 @@ namespace Shared.Tests.Serialization
             doc.Connections.Add(new VibConnection
             {
                 Identifier = Guid.NewGuid(),
-                Source = source,
-                Destination = destination,
+                Source = source.Identifier,
+                Destination = destination.Identifier,
                 Type = VibConnectionType.Unconditional
             });
 
@@ -174,21 +174,21 @@ namespace Shared.Tests.Serialization
         {
             foreach (var type in Enum.GetValues<VibConnectionType>())
             {
-                var doc = new VibDocument("doc.vib", "doc.vib");
+                var doc = new VibDocument("doc.vib", "doc.vib", "v0.05");
                 var source = new StartBlock(); var destination = new StopBlock();
                 doc.Blocks.Add(source); doc.Blocks.Add(destination);
                 doc.Connections.Add(new VibConnection
                 {
                     Identifier = Guid.NewGuid(),
-                    Source = source,
-                    Destination = destination,
+                    Source = source.Identifier,
+                    Destination = destination.Identifier,
                     Type = type
                 });
 
                 var conn = JsonNode.Parse(_serializer.Serialize(doc))!
                                    ["connections"]!.AsArray()[0]!;
 
-                conn["Type"]!.GetValue<string>().Should().Be(type.ToString());
+                conn["type"]!.GetValue<string>().Should().Be(type.ToString());
             }
         }
 
@@ -228,7 +228,7 @@ namespace Shared.Tests.Serialization
                     { "$type": "StopBlock",        "Type": "Stop",        "Identifier": "bbbbbbbb-0000-0000-0000-000000000000" },
                     { "$type": "StatementBlock",   "Type": "Statement",   "Identifier": "cccccccc-0000-0000-0000-000000000000", "Code": "x=1" },
                     { "$type": "ConditionalBlock", "Type": "Conditional", "Identifier": "dddddddd-0000-0000-0000-000000000000", "Code": "x>0" },
-                    { "$type": "InteractionBlock", "Type": "Interaction", "Identifier": "eeeeeeee-0000-0000-0000-000000000000", "Code": "print(x)" }
+                    { "$type": "InteractionBlock", "Type": "IO", "Identifier": "eeeeeeee-0000-0000-0000-000000000000", "Code": "print(x)" }
                 ],
                 "connections": []
             }
@@ -397,15 +397,15 @@ namespace Shared.Tests.Serialization
             doc.Connections.Add(new VibConnection
             {
                 Identifier = Guid.NewGuid(),
-                Source = start,
-                Destination = stmt,
+                Source = start.Identifier,
+                Destination = stmt.Identifier,
                 Type = VibConnectionType.Unconditional
             });
             doc.Connections.Add(new VibConnection
             {
                 Identifier = Guid.NewGuid(),
-                Source = stmt,
-                Destination = stop,
+                Source = stmt.Identifier,
+                Destination = stop.Identifier,
                 Type = VibConnectionType.Unconditional
             });
 
