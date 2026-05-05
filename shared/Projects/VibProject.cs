@@ -17,10 +17,11 @@ namespace shared.Projects
         /// </summary>
         /// <param name="fileName">The name of the project file to associate with this instance. Can be null if not specified.</param>
         /// <param name="filePath">The full path to the project file. Can be null if not specified.</param>
-        public VibProject(string? fileName = null, string? filePath = null)
+        public VibProject(string? fileName = null, string? filePath = null, string? version = null)
         {
             FileName = fileName;
             FilePath = filePath;
+            Version = version;
             Documents = new List<VibDocument>();
         }
 
