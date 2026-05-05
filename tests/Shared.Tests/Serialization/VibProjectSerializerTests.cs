@@ -93,8 +93,12 @@ namespace Shared.Tests.Serialization
                 "name": "ImportedProject",
                 "version": "2.0",
                 "documents": [
-                    "folder/doc1.vib",
-                    "folder/doc2.vib"
+                    {
+                        "path": "C:/vibas/doc1.vib"
+                    },
+                    {
+                        "path": "C:/vibas/doc2.vib"
+                    }
                 ]
             }
             """;
