@@ -24,8 +24,6 @@ namespace shared.Serialization
             {
                 VibProject? project = JsonSerializer.Deserialize<VibProject>(data, options);
 
-                
-
                 if (project == null)
                     throw new JsonException("Deserialization returned null for VibDocument. Input may be 'null' or empty.");
 

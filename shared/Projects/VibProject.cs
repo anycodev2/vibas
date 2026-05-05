@@ -10,7 +10,7 @@ namespace shared.Projects
         [JsonPropertyName("path")]
         public string? FilePath { get; set; }
         public string? Version { get; set; }
-        public List<VibDocument> Documents { get; }
+        public List<VibDocument> Documents { get; set;  }
 
         /// <summary>
         /// Initializes a new instance of the VibProject class with the specified file name and file path.
