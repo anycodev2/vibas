@@ -19,7 +19,16 @@ namespace shared.Projects
         /// <param name="filePath">The full path to the project file. Can be null if not specified.</param>
         public VibProject(string? fileName = null, string? filePath = null, string? version = null)
         {
-            FileName = fileName;
+            // If the FileName is Test, the constructor will add the extension if it's missing. 
+            // then the filename will be Test.vibproj
+            if (String.IsNullOrWhiteSpace(fileName))
+            {
+                FileName = null;
+            }
+            else
+            {
+                FileName = Path.HasExtension(fileName) ? fileName : fileName + ".vibproj";
+            }
             FilePath = filePath;
             Version = version;
             Documents = new List<VibDocument>();
@@ -36,6 +45,27 @@ namespace shared.Projects
         /// </summary>
         /// <returns>true if the name is valid; otherwise, false.</returns>
         public bool HasValidName()
-            => throw new NotImplementedException();
+        {
+            // This class checks if the name of the project file is invalid 
+            if (String.IsNullOrWhiteSpace(FileName))
+                return false;
+            var name = FileName.Trim();
+            //If the name is empty or longer than 128 characters, it's invalid
+            if (name.Length == 0 || name.Length > 128) return false;
+            //If the name contains any invalid characters, it's invalid
+            if (name.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0) return false;
+            var baseName = Path.GetFileNameWithoutExtension(name).ToUpperInvariant();
+            //If name have only dots, it's invalid
+            if (baseName.Trim('.').Length == 0) return false;
+
+            //If the name is a reserved name, it's invalid
+            var reserved = new[]
+            {
+                "CON", "PRN", "AUX", "NUL",
+                "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
+                "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"
+            };
+            return Array.IndexOf(reserved, baseName) < 0;
+        }
     }
 }
