@@ -107,7 +107,7 @@ namespace Shared.Tests.Serialization
             var block = JsonNode.Parse(_serializer.Serialize(doc))!
                                 ["blocks"]!.AsArray()[0]!;
 
-            block["Identifier"]!.GetValue<string>()
+            block["identifier"]!.GetValue<string>()
                  .Should().Be(start.Identifier.ToString());
         }
 
