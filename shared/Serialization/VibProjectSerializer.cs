@@ -16,8 +16,7 @@ namespace shared.Serialization
         {
             var options = new JsonSerializerOptions
             {
-                PropertyNameCaseInsensitive = true,
-                //Converters = { new JsonStringEnumConverter() }
+                PropertyNameCaseInsensitive = true
             };
 
             try

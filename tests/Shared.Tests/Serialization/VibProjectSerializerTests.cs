@@ -118,7 +118,14 @@ namespace Shared.Tests.Serialization
             {
                 "name": "P",
                 "version": "1.0",
-                "documents": ["folder/doc1.vib", "folder/doc2.vib"]
+                "documents": [
+                    {
+                        "path": "folder/doc1.vib"
+                    }, 
+                    {
+                        "path": "folder/doc2.vib"
+                    }
+                ]
             }
             """;
 
@@ -135,7 +142,11 @@ namespace Shared.Tests.Serialization
             {
                 "name": "P",
                 "version": "1.0",
-                "documents": ["folder/subfolder/algo1.vib"]
+                "documents": [
+                    {
+                        "path": "folder/subfolder/algo1.vib"
+                    }
+                ]
             }
             """;
 
