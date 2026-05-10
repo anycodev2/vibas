@@ -3,6 +3,7 @@ using shared.Projects;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace shared.Serialization
 {
@@ -10,8 +11,12 @@ namespace shared.Serialization
     {
         public VibProjectSerializer() { }
 
-        public string Serialize(VibProject project) 
-            => throw new NotImplementedException();
+        public string Serialize(VibProject project)
+        {
+            string json = JsonSerializer.Serialize(project);
+
+            return json;
+        }
         public VibProject Deserialize(string data)
         {
             var options = new JsonSerializerOptions
@@ -25,6 +30,9 @@ namespace shared.Serialization
 
                 if (project == null)
                     throw new JsonException("Deserialization returned null for VibDocument. Input may be 'null' or empty.");
+
+                if (!project.HasValidName())
+                    throw new InvalidOperationException($"Project has invalid file name: '{project.FileName}'");
 
                 if (project.Documents != null)
                 {
