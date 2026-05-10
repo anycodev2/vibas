@@ -26,13 +26,23 @@ namespace shared.Serialization
                 if (project == null)
                     throw new JsonException("Deserialization returned null for VibDocument. Input may be 'null' or empty.");
 
+                if (project.Documents != null)
+                {
+                    foreach (var document in project.Documents)
+                    {
+                        if (string.IsNullOrEmpty(document.FileName) && !string.IsNullOrEmpty(document.FilePath))
+                        {
+                            document.FileName = Path.GetFileName(document.FilePath);
+                        }
+                    }
+                }
+
                 return project;
             }
             catch (JsonException exception)
             {
                 throw new JsonException($"Failed to deserialize VibDocument: {exception.Message}");
             }
-
         }
         private JsonObject SerializeMetadata(VibProject project) 
             => throw new NotImplementedException();
