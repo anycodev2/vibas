@@ -174,7 +174,7 @@ namespace Shared.Tests.Serialization
         {
             foreach (var type in Enum.GetValues<VibConnectionType>())
             {
-                var doc = new VibDocument("doc.vib", "doc.vib", "v0.05");
+                var doc = new VibDocument("doc.vib", "doc.vib");
                 var source = new StartBlock(); var destination = new StopBlock();
                 doc.Blocks.Add(source); doc.Blocks.Add(destination);
                 doc.Connections.Add(new VibConnection

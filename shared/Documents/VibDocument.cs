@@ -10,7 +10,6 @@ namespace shared.Documents
         public string? FilePath { get; set; }
         [JsonPropertyName("path")]
         public bool isModified { get; set; }
-        [JsonIgnore]
         public string? Version { get; set; }
         public Guid Identifier { get; init; } = Guid.NewGuid();
         public List<VibBlock> Blocks { get; init; } = new List<VibBlock>();
@@ -22,7 +21,7 @@ namespace shared.Documents
         /// <param name="fileName">The name of the document file to associate with this instance. Can be null if not specified.</param>
         /// <param name="filePath">The full path to the document file. Can be null if not specified.</param>
 
-        public VibDocument(String? fileName = null, String? filePath = null)
+        public VibDocument(String? fileName = null, String? filePath = null, String? version = null)
         {
             if (String.IsNullOrWhiteSpace(fileName))
             {
@@ -33,6 +32,7 @@ namespace shared.Documents
                 FileName = Path.HasExtension(fileName) ? fileName : fileName + ".vib";
             }
             FilePath = filePath;
+            Version = version;
             isModified = false;
         }
 
