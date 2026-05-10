@@ -9,7 +9,9 @@ namespace shared.Projects
         public string? FileName { get; set; }
         [JsonPropertyName("path")]
         public string? FilePath { get; set; }
+        [JsonPropertyName("version")]
         public string? Version { get; set; }
+        [JsonPropertyName("documents")]
         public List<VibDocument> Documents { get; set; }
 
         /// <summary>

@@ -106,7 +106,7 @@ namespace Shared.Tests.Serialization
             var project = _serializer.Deserialize(json);
 
             project.Should().NotBeNull();
-            project.FileName.Should().Be("ImportedProject");
+            project.FileName.Should().Be("ImportedProject.vibproj");
             project.Version.Should().Be("2.0");
             project.Documents.Should().HaveCount(2);
         }

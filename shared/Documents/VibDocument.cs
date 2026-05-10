@@ -5,11 +5,12 @@ namespace shared.Documents
 {
     public class VibDocument
     {
-        public string? FileName { get; set; }
         [JsonPropertyName("name")]
-        public string? FilePath { get; set; }
+        public string? FileName { get; set; }
         [JsonPropertyName("path")]
+        public string? FilePath { get; set; }
         public bool isModified { get; set; }
+        [JsonPropertyName("version")]
         public string? Version { get; set; }
         public Guid Identifier { get; init; } = Guid.NewGuid();
         public List<VibBlock> Blocks { get; init; } = new List<VibBlock>();
