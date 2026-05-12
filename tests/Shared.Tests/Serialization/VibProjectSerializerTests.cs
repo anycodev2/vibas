@@ -25,12 +25,12 @@ namespace Shared.Tests.Serialization
             var node = JsonNode.Parse(json);
 
             node.Should().NotBeNull();
-            node!["name"]!.GetValue<string>().Should().Be("MyProject.vibproj");
+            node!["name"]!.GetValue<string>().Should().Be("MyProject");
             node["version"]!.GetValue<string>().Should().Be("1.2.3");
 
             var docs = node["documents"]!.AsArray();
             docs.Should().HaveCount(2);
-            docs.Select(x => x!["path"]!.GetValue<string>()).Should().BeEquivalentTo(new[]
+            docs.Select(x => x!.GetValue<string>()).Should().BeEquivalentTo(new[]
             {
                 "C:/projects/algorithms/algo1.vib",
                 "C:/projects/algorithms/algo2.vib"
@@ -68,11 +68,11 @@ namespace Shared.Tests.Serialization
 
             var docs = node!["documents"]!.AsArray();
             docs.Should().HaveCount(1);
-            docs[0]!["path"]!.GetValue<string>().Should().Be("path/to/valid.vib");
+            docs[0]!.GetValue<string>().Should().Be("path/to/valid.vib");
         }
 
         [Fact]
-        public void Serialize_ShouldProduceDocumentObjects_WithPathProperty()
+        public void Serialize_ShouldProducePathsOnly_NotEmbeddedDocumentContent()
         {
             var project = new VibProject("P", "p.vibproj");
             project.Documents.Add(new VibDocument("doc.vib", "docs/doc.vib"));
@@ -82,8 +82,7 @@ namespace Shared.Tests.Serialization
 
             var firstDoc = node!["documents"]!.AsArray()[0];
 
-            firstDoc!.GetValueKind().Should().Be(JsonValueKind.Object);
-            firstDoc!["path"]!.GetValue<string>().Should().Be("docs/doc.vib");
+            firstDoc!.GetValueKind().Should().Be(JsonValueKind.String);
         }
 
         [Fact]
@@ -94,12 +93,8 @@ namespace Shared.Tests.Serialization
                 "name": "ImportedProject",
                 "version": "2.0",
                 "documents": [
-                    {
-                        "path": "C:/vibas/doc1.vib"
-                    },
-                    {
-                        "path": "C:/vibas/doc2.vib"
-                    }
+                    "folder/doc1.vib",
+                    "folder/doc2.vib"
                 ]
             }
             """;
@@ -107,7 +102,7 @@ namespace Shared.Tests.Serialization
             var project = _serializer.Deserialize(json);
 
             project.Should().NotBeNull();
-            project.FileName.Should().Be("ImportedProject.vibproj");
+            project.FileName.Should().Be("ImportedProject");
             project.Version.Should().Be("2.0");
             project.Documents.Should().HaveCount(2);
         }
@@ -119,14 +114,7 @@ namespace Shared.Tests.Serialization
             {
                 "name": "P",
                 "version": "1.0",
-                "documents": [
-                    {
-                        "path": "folder/doc1.vib"
-                    }, 
-                    {
-                        "path": "folder/doc2.vib"
-                    }
-                ]
+                "documents": ["folder/doc1.vib", "folder/doc2.vib"]
             }
             """;
 
@@ -143,11 +131,7 @@ namespace Shared.Tests.Serialization
             {
                 "name": "P",
                 "version": "1.0",
-                "documents": [
-                    {
-                        "path": "folder/subfolder/algo1.vib"
-                    }
-                ]
+                "documents": ["folder/subfolder/algo1.vib"]
             }
             """;
 

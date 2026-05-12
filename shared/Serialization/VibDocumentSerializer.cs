@@ -1,54 +1,18 @@
 ﻿using shared.Blocks.Base;
 using shared.Documents;
-using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
-using System.Text.Json.Serialization.Metadata;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace shared.Serialization
 {
     public class VibDocumentSerializer : IVibSerializer<VibDocument>
     {
-        public VibDocumentSerializer() {}
+        public VibDocumentSerializer()
+            => throw new NotImplementedException();
 
         public string Serialize(VibDocument document)
-        {
-            var options = new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            };
-
-            options.Converters.Add(new JsonStringEnumConverter());
-
-            string json = JsonSerializer.Serialize(document, options);
-
-            ArgumentNullException.ThrowIfNull(document);
-
-            return json;
-        }
+            => throw new NotImplementedException();
         public VibDocument Deserialize(string data)
-        {
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true,
-                Converters = { new JsonStringEnumConverter() }
-            };
-
-            try 
-            {
-                VibDocument? doc = JsonSerializer.Deserialize<VibDocument>(data, options);
-
-                if (doc == null)
-                    throw new JsonException("Deserialization returned null for VibDocument. Input may be 'null' or empty.");
-
-                return doc;
-            }
-            catch(JsonException exception) 
-            {
-                throw new JsonException($"Failed to deserialize VibDocument: {exception.Message}");
-            }
-        }
+            => throw new NotImplementedException();
         private JsonObject SerializeBlocks(List<VibBlock> blocks)
             => throw new NotImplementedException();
         private JsonArray SerializeConnections(List<VibConnection> connections)

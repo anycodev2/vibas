@@ -1,5 +1,4 @@
-﻿using shared.Blocks.Types;
-using System.Text.Json;
+﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace shared.Blocks.Base
@@ -12,12 +11,6 @@ namespace shared.Blocks.Base
     /// system. It provides a unique identifier, a block type, and supports extension data for additional properties not
     /// defined in the base class. The extension data enables forward compatibility and flexible serialization
     /// scenarios.</remarks>
-    [JsonPolymorphic(TypeDiscriminatorPropertyName = "$type")]
-    [JsonDerivedType(typeof(StartBlock), typeDiscriminator: "StartBlock")]
-    [JsonDerivedType(typeof(StopBlock), typeDiscriminator: "StopBlock")]
-    [JsonDerivedType(typeof(StatementBlock), typeDiscriminator: "StatementBlock")]
-    [JsonDerivedType(typeof(ConditionalBlock), typeDiscriminator: "ConditionalBlock")]
-    [JsonDerivedType(typeof(IOBlock), typeDiscriminator: "InteractionBlock")]
     public abstract class VibBlock
     {
         public BlockType Type { get; init; }
@@ -25,8 +18,6 @@ namespace shared.Blocks.Base
 
         [JsonExtensionData]
         public Dictionary<string, JsonElement>? ExtensionData { get; set; }
-
-        protected VibBlock() { }
 
         protected VibBlock(BlockType type)
         {

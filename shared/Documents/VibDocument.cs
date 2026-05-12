@@ -5,16 +5,13 @@ namespace shared.Documents
 {
     public class VibDocument
     {
-        [JsonPropertyName("name")]
         public string? FileName { get; set; }
-        [JsonPropertyName("path")]
         public string? FilePath { get; set; }
         public bool isModified { get; set; }
-        [JsonPropertyName("version")]
         public string? Version { get; set; }
         public Guid Identifier { get; init; } = Guid.NewGuid();
         public List<VibBlock> Blocks { get; init; } = new List<VibBlock>();
-        public List<VibConnection> Connections { get; set; } = new List<VibConnection>();
+        public List<VibConnection> Connections { get; init; } = new List<VibConnection>();
 
         /// <summary>
         /// Initializes a new instance of the VibDocument class with the specified file name and file path.

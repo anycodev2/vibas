@@ -14,7 +14,7 @@ namespace Shared.Tests.Serialization
         [Fact]
         public void Serialize_ShouldReturnValidJson_WithNameVersionBlocksConnections()
         {
-            var doc = new VibDocument("algo.vib", "path/algo.vib", "v0.05");
+            var doc = new VibDocument("algo.vib", "path/algo.vib");
 
             var json = _serializer.Serialize(doc);
             var node = JsonNode.Parse(json);
@@ -107,7 +107,7 @@ namespace Shared.Tests.Serialization
             var block = JsonNode.Parse(_serializer.Serialize(doc))!
                                 ["blocks"]!.AsArray()[0]!;
 
-            block["identifier"]!.GetValue<string>()
+            block["Identifier"]!.GetValue<string>()
                  .Should().Be(start.Identifier.ToString());
         }
 
@@ -121,7 +121,7 @@ namespace Shared.Tests.Serialization
             var block = JsonNode.Parse(_serializer.Serialize(doc))!
                                 ["blocks"]!.AsArray()[0]!;
 
-            block["code"]!.GetValue<string>().Should().Be("x = x + 1");
+            block["Code"]!.GetValue<string>().Should().Be("x = x + 1");
         }
 
         [Fact]
@@ -156,17 +156,17 @@ namespace Shared.Tests.Serialization
             doc.Connections.Add(new VibConnection
             {
                 Identifier = Guid.NewGuid(),
-                Source = source.Identifier,
-                Destination = destination.Identifier,
+                Source = source,
+                Destination = destination,
                 Type = VibConnectionType.Unconditional
             });
 
             var node = JsonNode.Parse(_serializer.Serialize(doc))!;
             var conn = node["connections"]!.AsArray()[0]!;
 
-            conn["source"]!.GetValue<string>().Should().Be(source.Identifier.ToString());
-            conn["destination"]!.GetValue<string>().Should().Be(destination.Identifier.ToString());
-            conn["type"]!.GetValue<string>().Should().Be("Unconditional");
+            conn["Source"]!.GetValue<string>().Should().Be(source.Identifier.ToString());
+            conn["Destination"]!.GetValue<string>().Should().Be(destination.ToString());
+            conn["Type"]!.GetValue<string>().Should().Be("Unconditional");
         }
 
         [Fact]
@@ -180,15 +180,15 @@ namespace Shared.Tests.Serialization
                 doc.Connections.Add(new VibConnection
                 {
                     Identifier = Guid.NewGuid(),
-                    Source = source.Identifier,
-                    Destination = destination.Identifier,
+                    Source = source,
+                    Destination = destination,
                     Type = type
                 });
 
                 var conn = JsonNode.Parse(_serializer.Serialize(doc))!
                                    ["connections"]!.AsArray()[0]!;
 
-                conn["type"]!.GetValue<string>().Should().Be(type.ToString());
+                conn["Type"]!.GetValue<string>().Should().Be(type.ToString());
             }
         }
 
@@ -228,7 +228,7 @@ namespace Shared.Tests.Serialization
                     { "$type": "StopBlock",        "Type": "Stop",        "Identifier": "bbbbbbbb-0000-0000-0000-000000000000" },
                     { "$type": "StatementBlock",   "Type": "Statement",   "Identifier": "cccccccc-0000-0000-0000-000000000000", "Code": "x=1" },
                     { "$type": "ConditionalBlock", "Type": "Conditional", "Identifier": "dddddddd-0000-0000-0000-000000000000", "Code": "x>0" },
-                    { "$type": "InteractionBlock", "Type": "IO", "Identifier": "eeeeeeee-0000-0000-0000-000000000000", "Code": "print(x)" }
+                    { "$type": "InteractionBlock", "Type": "Interaction", "Identifier": "eeeeeeee-0000-0000-0000-000000000000", "Code": "print(x)" }
                 ],
                 "connections": []
             }
@@ -397,15 +397,15 @@ namespace Shared.Tests.Serialization
             doc.Connections.Add(new VibConnection
             {
                 Identifier = Guid.NewGuid(),
-                Source = start.Identifier,
-                Destination = stmt.Identifier,
+                Source = start,
+                Destination = stmt,
                 Type = VibConnectionType.Unconditional
             });
             doc.Connections.Add(new VibConnection
             {
                 Identifier = Guid.NewGuid(),
-                Source = stmt.Identifier,
-                Destination = stop.Identifier,
+                Source = stmt,
+                Destination = stop,
                 Type = VibConnectionType.Unconditional
             });
 
