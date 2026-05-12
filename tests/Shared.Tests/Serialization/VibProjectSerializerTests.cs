@@ -30,7 +30,7 @@ namespace Shared.Tests.Serialization
 
             var docs = node["documents"]!.AsArray();
             docs.Should().HaveCount(2);
-            docs.Select(x => x!.GetValue<string>()).Should().BeEquivalentTo(new[]
+            docs.Select(x => x!["path"]!.GetValue<string>()).Should().BeEquivalentTo(new[]
             {
                 "C:/projects/algorithms/algo1.vib",
                 "C:/projects/algorithms/algo2.vib"
