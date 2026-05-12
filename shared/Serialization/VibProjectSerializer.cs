@@ -1,5 +1,6 @@
 ﻿using shared.Documents;
 using shared.Projects;
+using System.Reflection.Metadata;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
@@ -13,6 +14,13 @@ namespace shared.Serialization
 
         public string Serialize(VibProject project)
         {
+            ArgumentNullException.ThrowIfNull(project);
+
+            var options = new JsonSerializerOptions
+            {
+                
+            };
+
             string json = JsonSerializer.Serialize(project);
 
             return json;
