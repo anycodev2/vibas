@@ -7,5 +7,6 @@ namespace shared.Blocks.Types
     /// </summary>
     public class StatementBlock : VibCodeBlock {
         public StatementBlock() : base(BlockType.Statement) { }
+
     }
 }

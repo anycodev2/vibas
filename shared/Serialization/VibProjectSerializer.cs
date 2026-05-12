@@ -1,18 +1,64 @@
-﻿using System.Text.Json.Nodes;
-using shared.Documents;
+﻿using shared.Documents;
 using shared.Projects;
+using System.Diagnostics;
+using System.Reflection.Metadata;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace shared.Serialization
 {
     public class VibProjectSerializer : IVibSerializer<VibProject>
     {
-        public VibProjectSerializer()
-            => throw new NotImplementedException();
+        public VibProjectSerializer() { }
 
-        public string Serialize(VibProject project) 
-            => throw new NotImplementedException();
-        public VibProject Deserialize(string data) 
-            => throw new NotImplementedException();
+        public string Serialize(VibProject project)
+        {
+            ArgumentNullException.ThrowIfNull(project);
+
+            project.Documents.RemoveAll(doc =>
+                string.IsNullOrWhiteSpace(doc.FilePath));
+
+            string json = JsonSerializer.Serialize(project);
+
+            return json;
+        }
+        public VibProject Deserialize(string data)
+        {
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            try
+            {
+                VibProject? project = JsonSerializer.Deserialize<VibProject>(data, options);
+
+                if (project == null)
+                    throw new JsonException("Deserialization returned null for VibDocument. Input may be 'null' or empty.");
+
+                if (!project.HasValidName())
+                    throw new InvalidOperationException($"Project has invalid file name: '{project.FileName}'");
+
+                if (project.Documents != null)
+                {
+                    foreach (var document in project.Documents)
+                    {
+                        if (string.IsNullOrEmpty(document.FileName) && !string.IsNullOrEmpty(document.FilePath))
+                        {
+                            document.FileName = Path.GetFileName(document.FilePath);
+                        }
+                    }
+                }
+
+                return project;
+            }
+            catch (JsonException exception)
+            {
+                throw new JsonException($"Failed to deserialize VibDocument: {exception.Message}");
+            }
+        }
         private JsonObject SerializeMetadata(VibProject project) 
             => throw new NotImplementedException();
         private JsonArray SerializeDocuments(VibProject project) 

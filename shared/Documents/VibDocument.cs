@@ -5,16 +5,16 @@ namespace shared.Documents
 {
     public class VibDocument
     {
-        public string? FileName { get; set; }
         [JsonPropertyName("name")]
-        public string? FilePath { get; set; }
+        public string? FileName { get; set; }
         [JsonPropertyName("path")]
+        public string? FilePath { get; set; }
         public bool isModified { get; set; }
-        [JsonIgnore]
+        [JsonPropertyName("version")]
         public string? Version { get; set; }
         public Guid Identifier { get; init; } = Guid.NewGuid();
         public List<VibBlock> Blocks { get; init; } = new List<VibBlock>();
-        public List<VibConnection> Connections { get; init; } = new List<VibConnection>();
+        public List<VibConnection> Connections { get; set; } = new List<VibConnection>();
 
         /// <summary>
         /// Initializes a new instance of the VibDocument class with the specified file name and file path.
@@ -22,7 +22,7 @@ namespace shared.Documents
         /// <param name="fileName">The name of the document file to associate with this instance. Can be null if not specified.</param>
         /// <param name="filePath">The full path to the document file. Can be null if not specified.</param>
 
-        public VibDocument(String? fileName = null, String? filePath = null)
+        public VibDocument(String? fileName = null, String? filePath = null, String? version = null)
         {
             if (String.IsNullOrWhiteSpace(fileName))
             {
@@ -33,6 +33,7 @@ namespace shared.Documents
                 FileName = Path.HasExtension(fileName) ? fileName : fileName + ".vib";
             }
             FilePath = filePath;
+            Version = version;
             isModified = false;
         }
 

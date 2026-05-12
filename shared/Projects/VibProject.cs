@@ -9,15 +9,17 @@ namespace shared.Projects
         public string? FileName { get; set; }
         [JsonPropertyName("path")]
         public string? FilePath { get; set; }
+        [JsonPropertyName("version")]
         public string? Version { get; set; }
-        public List<VibDocument> Documents { get; }
+        [JsonPropertyName("documents")]
+        public List<VibDocument> Documents { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the VibProject class with the specified file name and file path.
         /// </summary>
         /// <param name="fileName">The name of the project file to associate with this instance. Can be null if not specified.</param>
         /// <param name="filePath">The full path to the project file. Can be null if not specified.</param>
-        public VibProject(String? fileName = null, String? filePath = null)
+        public VibProject(String? fileName = null, String? filePath = null, String? version = null)
         {
             // If the FileName is Test, the constructor will add the extension if it's missing. 
             // then the filename will be Test.vibproj
@@ -30,6 +32,7 @@ namespace shared.Projects
                 FileName = Path.HasExtension(fileName) ? fileName : fileName + ".vibproj";
             }
             FilePath = filePath;
+            Version = version;
             Documents = new List<VibDocument>();
         }
 

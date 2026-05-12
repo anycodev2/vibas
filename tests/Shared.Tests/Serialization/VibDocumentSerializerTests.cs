@@ -107,7 +107,7 @@ namespace Shared.Tests.Serialization
             var block = JsonNode.Parse(_serializer.Serialize(doc))!
                                 ["blocks"]!.AsArray()[0]!;
 
-            block["Identifier"]!.GetValue<string>()
+            block["identifier"]!.GetValue<string>()
                  .Should().Be(start.Identifier.ToString());
         }
 
@@ -121,7 +121,7 @@ namespace Shared.Tests.Serialization
             var block = JsonNode.Parse(_serializer.Serialize(doc))!
                                 ["blocks"]!.AsArray()[0]!;
 
-            block["Code"]!.GetValue<string>().Should().Be("x = x + 1");
+            block["code"]!.GetValue<string>().Should().Be("x = x + 1");
         }
 
         [Fact]
@@ -164,9 +164,9 @@ namespace Shared.Tests.Serialization
             var node = JsonNode.Parse(_serializer.Serialize(doc))!;
             var conn = node["connections"]!.AsArray()[0]!;
 
-            conn["Source"]!.GetValue<string>().Should().Be(source.Identifier.ToString());
-            conn["Destination"]!.GetValue<string>().Should().Be(destination.ToString());
-            conn["Type"]!.GetValue<string>().Should().Be("Unconditional");
+            conn["source"]!.GetValue<string>().Should().Be(source.Identifier.ToString());
+            conn["destination"]!.GetValue<string>().Should().Be(destination.Identifier.ToString());
+            conn["type"]!.GetValue<string>().Should().Be("Unconditional");
         }
 
         [Fact]
@@ -174,7 +174,7 @@ namespace Shared.Tests.Serialization
         {
             foreach (var type in Enum.GetValues<VibConnectionType>())
             {
-                var doc = new VibDocument("doc.vib", "doc.vib", "v0.05");
+                var doc = new VibDocument("doc.vib", "doc.vib");
                 var source = new StartBlock(); var destination = new StopBlock();
                 doc.Blocks.Add(source); doc.Blocks.Add(destination);
                 doc.Connections.Add(new VibConnection
