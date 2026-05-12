@@ -68,11 +68,11 @@ namespace Shared.Tests.Serialization
 
             var docs = node!["documents"]!.AsArray();
             docs.Should().HaveCount(1);
-            docs[0]!.GetValue<string>().Should().Be("path/to/valid.vib");
+            docs[0]!["path"]!.GetValue<string>().Should().Be("path/to/valid.vib");
         }
 
         [Fact]
-        public void Serialize_ShouldProducePathsOnly_NotEmbeddedDocumentContent()
+        public void Serialize_ShouldProduceDocumentObjects_WithPathProperty()
         {
             var project = new VibProject("P", "p.vibproj");
             project.Documents.Add(new VibDocument("doc.vib", "docs/doc.vib"));
@@ -83,6 +83,7 @@ namespace Shared.Tests.Serialization
             var firstDoc = node!["documents"]!.AsArray()[0];
 
             firstDoc!.GetValueKind().Should().Be(JsonValueKind.Object);
+            firstDoc!["path"]!.GetValue<string>().Should().Be("docs/doc.vib");
         }
 
         [Fact]

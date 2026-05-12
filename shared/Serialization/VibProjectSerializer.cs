@@ -1,5 +1,6 @@
 ﻿using shared.Documents;
 using shared.Projects;
+using System.Diagnostics;
 using System.Reflection.Metadata;
 using System.Text.Json;
 using System.Text.Json.Nodes;
@@ -16,10 +17,8 @@ namespace shared.Serialization
         {
             ArgumentNullException.ThrowIfNull(project);
 
-            var options = new JsonSerializerOptions
-            {
-                
-            };
+            project.Documents.RemoveAll(doc =>
+                string.IsNullOrWhiteSpace(doc.FilePath));
 
             string json = JsonSerializer.Serialize(project);
 
