@@ -1,12 +1,12 @@
 # Standalone
 
-Opis
-- `standalone` to warstwa prezentacji — samodzielna aplikacja desktopowa stanowiąca główny interfejs użytkownika systemu. Jej głównym zadaniem jest prezentacja danych, zbieranie działań użytkownika i delegowanie operacji do warstwy domenowej (`shared`) lub do zewnętrznych serwisów (`api`).
+Description
+- `standalone` is the presentation layer — a standalone desktop application that serves as the main user interface of the system. Its primary task is to present data, collect user actions and delegate operations to the domain layer (`shared`) or to external services (`api`).
 
-Zadania i odpowiedzialności
+Tasks and responsibilities
 -
-- `Views` — definicje interfejsu (XAML/AXAML). Przykłady: `MainWindow.axaml`, `StartWindow.axaml`.
-- `ViewModels` — logika prezentacji i stan widoków. Powinny zawierać komendy, właściwości powiadamiające i minimalną logikę UI.
-- `App.axaml(.cs)` / `Program.cs` — inicjalizacja aplikacji, konfiguracja DI i rejestracja usług na starcie.
-- `ViewLocator.cs` — mechanizm mapowania widok ↔ viewmodel (ułatwia automatyczne podpinanie).
-- Integracje z `shared` — serwisy i modele pobierane z biblioteki współdzielonej.
+- `Views` — UI definitions (XAML/AXAML). Examples: `MainWindow.axaml`, `StartWindow.axaml`.
+- `ViewModels` — presentation logic and view state. They should contain commands, notifyable properties and minimal UI logic.
+- `App.axaml(.cs)` / `Program.cs` — application initialization, DI configuration and service registration at startup.
+- `ViewLocator.cs` — mechanism for mapping view ↔ viewmodel (helps automatic wiring).
+- Integrations with `shared` — services and models fetched from the shared library.
