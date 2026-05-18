@@ -228,7 +228,7 @@ namespace Shared.Tests.Serialization
                     { "$type": "StopBlock",        "Type": "Stop",        "Identifier": "bbbbbbbb-0000-0000-0000-000000000000" },
                     { "$type": "StatementBlock",   "Type": "Statement",   "Identifier": "cccccccc-0000-0000-0000-000000000000", "Code": "x=1" },
                     { "$type": "ConditionalBlock", "Type": "Conditional", "Identifier": "dddddddd-0000-0000-0000-000000000000", "Code": "x>0" },
-                    { "$type": "InteractionBlock", "Type": "Interaction", "Identifier": "eeeeeeee-0000-0000-0000-000000000000", "Code": "print(x)" }
+                    { "$type": "InteractionBlock", "Type": "IO", "Identifier": "eeeeeeee-0000-0000-0000-000000000000", "Code": "print(x)" }
                 ],
                 "connections": []
             }
