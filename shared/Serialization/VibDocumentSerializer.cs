@@ -1,18 +1,39 @@
 ﻿using shared.Blocks.Base;
 using shared.Documents;
+using System.Data;
+using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 
 namespace shared.Serialization
 {
     public class VibDocumentSerializer : IVibSerializer<VibDocument>
     {
-        public VibDocumentSerializer()
-            => throw new NotImplementedException();
+        public VibDocumentSerializer() { }
 
         public string Serialize(VibDocument document)
             => throw new NotImplementedException();
         public VibDocument Deserialize(string data)
-            => throw new NotImplementedException();
+        {
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            try
+            {
+                VibDocument? document = JsonSerializer.Deserialize<VibDocument>(data, options);
+
+                if (document == null)
+                    throw new JsonException("Deserialization returned null for VibDocument. Input might be null or empty.");
+                
+                return document;
+            }
+            catch (JsonException exception)
+            {
+                throw new JsonException($"Failed to deserialize VibDocument: {exception.Message}");
+            }
+        }
         private JsonObject SerializeBlocks(List<VibBlock> blocks)
             => throw new NotImplementedException();
         private JsonArray SerializeConnections(List<VibConnection> connections)
