@@ -1,12 +1,12 @@
 # API
 
-- `api` to lekka warstwa serwerowa, której zadaniem jest udostępnianie danych i operacji przez HTTP dla klientów (web, desktop, inne).
+- `api` is a lightweight server layer whose task is to expose data and operations over HTTP for clients (web, desktop, others).
 
-Co zawiera
-- `Program.cs` — konfiguracja aplikacji i rejestracja kontrolerów.
-- `Controllers` — kontrolery obsługujące endpointy.
-- Modele używane w odpowiedziach/żądaniach — jeśli to konieczne, pochodzą z `shared`.
+What it contains
+- `Program.cs` — application configuration and controller registration.
+- `Controllers` — controllers handling endpoints.
+- Models used in responses/requests — if necessary, they come from `shared`.
 
-Jak działa (w skrócie)
-- Każdy kontroler mapuje zestaw endpointów HTTP do operacji aplikacji.
-- `api` przyjmuje żądanie → mapuje/potwierdza dane → deleguje do logiki lub mapuje modele z `shared` → zwraca odpowiedź.
+How it works (in brief)
+- Each controller maps a set of HTTP endpoints to application operations.
+- `api` accepts a request → maps/validates data → delegates to logic or maps models from `shared` → returns a response.
