@@ -42,10 +42,5 @@
 2. Open the project in Visual Studio 2026
 3. Press F5 to run the application
 
----
-
-## Contact
-
-- email: vibas@mojadomena.pl
 
 ---
