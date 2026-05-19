@@ -24,10 +24,32 @@ namespace shared.Services
             document.FilePath = filePath;
             return document;
         }
-        public override void Save(VibDocument document)
+
+    public override void Save(VibDocument document)
         {
-            var content = Serializer.Serialize(document);
-            File.WriteAllText(document.FilePath, content);
+            if (document == null) 
+                throw new ArgumentNullException(nameof(document));
+
+            if (string.IsNullOrWhiteSpace(document.FilePath))
+                throw new ArgumentException("FilePath cannot be null or empty.", nameof(document.FilePath));
+
+            try
+            {
+                var content = Serializer.Serialize(document);
+                File.WriteAllText(document.FilePath, content);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                throw new IOException($"Cannot save: Access denied to the file path '{document.FilePath}'.", ex);
+            }
+            catch (Exception ex) when (ex is System.Text.Json.JsonException || ex.GetType().Name.Contains("Serialization"))
+            {
+                throw new IOException("An unexpected error occurred during save.", ex);
+            }
+            catch (IOException ex)
+            {
+                throw new IOException($"A disk error occurred while saving the document to '{document.FilePath}'.", ex);
+            }
         }
 
         public void AddBlock(VibDocument document, VibBlock block)
@@ -35,7 +57,15 @@ namespace shared.Services
             if (document == null) throw new ArgumentNullException(nameof(document));
             if (block == null) throw new ArgumentNullException(nameof(block));
 
-            if (document.Blocks == null) document.Blocks = new List<VibBlock>();
+            if (document.Blocks == null)
+            {
+                throw new InvalidOperationException("The document was not properly initialized.");
+            }
+
+            if (document.Blocks.Any(b => b.Identifier == block.Identifier))
+            {
+                throw new InvalidOperationException("Block already exists in the document.");
+            }
 
             document.Blocks.Add(block);
         }
