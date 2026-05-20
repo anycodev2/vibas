@@ -44,7 +44,7 @@ namespace shared.Services
 
         public override void Save(VibProject project)
         {
-            if (project == null) throw new ArgumentNullException(nameof(project));
+            ArgumentNullException.ThrowIfNull(project);
 
             try
             {
@@ -53,7 +53,7 @@ namespace shared.Services
             }
             catch (Exception ex)
             {
-                throw new IOException("Error occurred while saving the file.", ex);
+                throw new Exception("Error occurred while saving the file.", ex);
             }
         }
 

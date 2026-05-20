@@ -1,6 +1,8 @@
 ﻿using shared.Documents;
 using shared.Serialization;
 using shared.Blocks.Base;
+using System.Text.Json;
+
 
 namespace shared.Services
 {
@@ -37,10 +39,6 @@ namespace shared.Services
             {
                 var content = Serializer.Serialize(document);
                 File.WriteAllText(document.FilePath, content);
-            }
-            catch (Exception ex) when (ex is System.Text.Json.JsonException || ex.GetType().Name.Contains("Serialization"))
-            {
-                throw new IOException("An unexpected error occurred during save.", ex);
             }
             catch (IOException ex)
             {
