@@ -38,17 +38,13 @@ namespace shared.Services
                 var content = Serializer.Serialize(document);
                 File.WriteAllText(document.FilePath, content);
             }
-            catch (UnauthorizedAccessException ex)
-            {
-                throw new IOException($"Cannot save: Access denied to the file path '{document.FilePath}'.", ex);
-            }
             catch (Exception ex) when (ex is System.Text.Json.JsonException || ex.GetType().Name.Contains("Serialization"))
             {
                 throw new IOException("An unexpected error occurred during save.", ex);
             }
             catch (IOException ex)
             {
-                throw new IOException($"A disk error occurred while saving the document to '{document.FilePath}'.", ex);
+                throw new IOException($"An unexpected error during saving the document to '{document.FilePath}'.", ex);
             }
         }
 

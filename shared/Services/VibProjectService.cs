@@ -27,22 +27,18 @@ namespace shared.Services
 
             try
             {
-                var content = System.IO.File.ReadAllText(filePath);
+                var content = File.ReadAllText(filePath);
                 var project = Serializer.Deserialize(content);
 
-                return project ?? throw new System.IO.InvalidDataException("Deserialized project object is null.");
+                return project ?? throw new InvalidDataException("Deserialized project object is null.");
             }
-            catch (System.IO.FileNotFoundException ex)
+            catch (FileNotFoundException ex)
             {
-                throw new System.IO.FileNotFoundException($"The project file was not found at: {filePath}", ex);
+                throw new FileNotFoundException($"The project file was not found at: {filePath}", ex);
             }
-            catch (System.UnauthorizedAccessException ex)
+            catch (IOException ex)
             {
-                throw new System.IO.IOException($"Access denied. You do not have permission to read: {filePath}", ex);
-            }
-            catch (System.IO.IOException ex)
-            {
-                throw new System.IO.IOException($"Disk or locking error occurred while opening: {filePath}", ex);
+                throw new IOException($"Error occurred while opening: {filePath}", ex);
             }
         }
 
@@ -53,15 +49,11 @@ namespace shared.Services
             try
             {
                 var content = Serializer.Serialize(project);
-                System.IO.File.WriteAllText(project.FilePath, content);
+                File.WriteAllText(project.FilePath, content);
             }
-            catch (System.UnauthorizedAccessException ex)
+            catch (Exception ex)
             {
-                throw new System.IO.IOException("Cannot save: You do not have permission to edit this file.", ex);
-            }
-            catch (System.Exception ex)
-            {
-                throw new System.IO.IOException("A critical error occurred while saving the file.", ex);
+                throw new IOException("Error occurred while saving the file.", ex);
             }
         }
 
