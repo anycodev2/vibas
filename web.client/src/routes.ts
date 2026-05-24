@@ -1,7 +1,7 @@
 export const NAV_ITEMS = [
-  { label: "Products", path: "/products" },
-  { label: "Rankings", path: "/rankings" },
-  { label: "Download", path: "/download" },
+  { label: "Features", path: "/features" },
+  { label: "Use Cases", path: "/use-cases" },
+  { label: "Downloads", path: "/download" },
   { label: "About", path: "/about" },
 ] as const;
 
