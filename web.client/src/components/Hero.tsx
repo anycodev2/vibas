@@ -17,7 +17,7 @@ export function Hero() {
   return (
     <Box className={classes.heroWrapper}>
       <Container size="xl" py={80}>
-        <Grid align="center" gutter={60}>
+        <Grid align="center" gap={60}>
 
           <Grid.Col span={{ base: 12, md: 7 }}>
             <Stack gap="xl">
