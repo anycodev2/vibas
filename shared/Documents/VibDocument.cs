@@ -10,6 +10,7 @@ namespace shared.Documents
         public bool isModified { get; set; }
         public string? Version { get; set; }
         public Guid Identifier { get; init; } = Guid.NewGuid();
+        [JsonIgnore]
         public List<VibBlock> Blocks { get; init; } = new List<VibBlock>();
         [JsonIgnore]
         public List<VibConnection> Connections { get; init; } = new List<VibConnection>();
