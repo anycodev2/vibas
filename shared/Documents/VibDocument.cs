@@ -11,6 +11,7 @@ namespace shared.Documents
         public string? Version { get; set; }
         public Guid Identifier { get; init; } = Guid.NewGuid();
         public List<VibBlock> Blocks { get; init; } = new List<VibBlock>();
+        [JsonIgnore]
         public List<VibConnection> Connections { get; init; } = new List<VibConnection>();
 
         /// <summary>

@@ -318,7 +318,18 @@ namespace Shared.Tests.Serialization
             var json = """
             {
                 "name": "doc.vib", "version": "1.0",
-                "blocks": [],
+                "blocks": [
+                    {
+                        "$type": "StartBlock",
+                        "Type": "Start",
+                        "Identifier": "aaaaaaaa-0000-0000-0000-000000000000"
+                    },
+                    {
+                        "$type": "StopBlock",
+                        "Type": "Stop",
+                        "Identifier": "bbbbbbbb-0000-0000-0000-000000000000"
+                    }
+                ],
                 "connections": [
                     {
                         "Identifier": "11111111-0000-0000-0000-000000000000",
@@ -334,8 +345,8 @@ namespace Shared.Tests.Serialization
             var conn = doc.Connections[0];
 
             conn.Identifier.Should().Be(Guid.Parse("11111111-0000-0000-0000-000000000000"));
-            conn.Source.Should().Be(Guid.Parse("aaaaaaaa-0000-0000-0000-000000000000"));
-            conn.Destination.Should().Be(Guid.Parse("bbbbbbbb-0000-0000-0000-000000000000"));
+            conn.Source.Identifier.Should().Be(Guid.Parse("aaaaaaaa-0000-0000-0000-000000000000"));
+            conn.Destination.Identifier.Should().Be(Guid.Parse("bbbbbbbb-0000-0000-0000-000000000000"));
             conn.Type.Should().Be(VibConnectionType.Unconditional);
         }
 
