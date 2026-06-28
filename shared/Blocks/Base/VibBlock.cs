@@ -35,22 +35,29 @@ namespace shared.Blocks.Base
     {
         public override VibBlock? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            using var doc = JsonDocument.ParseValue(ref reader);
-            var root = doc.RootElement;
-
-            var type = root.GetProperty("Type").GetString();
-
-            Type concreteType = type switch
+            try
             {
-                nameof(BlockType.Start) => typeof(StartBlock),
-                nameof(BlockType.Stop) => typeof(StopBlock),
-                nameof(BlockType.Statement) => typeof(StatementBlock),
-                nameof(BlockType.Conditional) => typeof(ConditionalBlock),
-                nameof(BlockType.IO) => typeof(IOBlock),
-                _ => throw new JsonException($"Unknown block type: {type}")
-            };
+                using var doc = JsonDocument.ParseValue(ref reader);
+                var root = doc.RootElement;
 
-            return (VibBlock?)JsonSerializer.Deserialize(root.GetRawText(), concreteType, options);
+                var type = root.GetProperty("Type").GetString();
+
+                Type concreteType = type switch
+                {
+                    nameof(BlockType.Start) => typeof(StartBlock),
+                    nameof(BlockType.Stop) => typeof(StopBlock),
+                    nameof(BlockType.Statement) => typeof(StatementBlock),
+                    nameof(BlockType.Conditional) => typeof(ConditionalBlock),
+                    nameof(BlockType.IO) => typeof(IOBlock),
+                    _ => throw new JsonException($"Unknown block type: {type}")
+                };
+
+                return (VibBlock?)JsonSerializer.Deserialize(root.GetRawText(), concreteType, options);
+            }
+            catch (KeyNotFoundException)
+            {
+                throw new JsonException("Block is missing required 'Type' discriminator.");
+            }
         }
 
         public override void Write(Utf8JsonWriter writer, VibBlock value, JsonSerializerOptions options)
