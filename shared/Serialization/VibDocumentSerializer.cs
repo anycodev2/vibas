@@ -12,7 +12,11 @@ namespace shared.Serialization
         public VibDocumentSerializer() { }
 
         public string Serialize(VibDocument document)
-            => throw new NotImplementedException();
+        {
+            string? json = JsonSerializer.Serialize<VibDocument>(document);
+
+            return json;
+        }
         public VibDocument Deserialize(string data)
         {
             var options = new JsonSerializerOptions
@@ -82,8 +86,8 @@ namespace shared.Serialization
                 var destinationId = Guid.Parse(node!["Destination"]!.GetValue<string>());
                 var type = Enum.Parse<VibConnectionType>(node!["Type"]!.GetValue<string>());
 
-                var sourceBlock = blockMap[sourceId];
-                var destinationBlock = blockMap[destinationId];
+                var sourceBlock = blockMap.GetValueOrDefault(sourceId);
+                var destinationBlock = blockMap.GetValueOrDefault(destinationId);
 
                 var connection = new VibConnection(sourceBlock, destinationBlock) 
                 { 
