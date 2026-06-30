@@ -12,12 +12,6 @@ namespace shared.Blocks.Base
     /// system. It provides a unique identifier, a block type, and supports extension data for additional properties not
     /// defined in the base class. The extension data enables forward compatibility and flexible serialization
     /// scenarios.</remarks>
-    [JsonPolymorphic(TypeDiscriminatorPropertyName = "$type")]
-    [JsonDerivedType(typeof(StartBlock), typeDiscriminator: "StartBlock")]
-    [JsonDerivedType(typeof(StopBlock), typeDiscriminator: "StopBlock")]
-    [JsonDerivedType(typeof(StatementBlock), typeDiscriminator: "StatementBlock")]
-    [JsonDerivedType(typeof(ConditionalBlock), typeDiscriminator: "ConditionalBlock")]
-    [JsonDerivedType(typeof(IOBlock), typeDiscriminator: "InteractionBlock")]
     public abstract class VibBlock
     {
         public BlockType Type { get; init; }
@@ -26,11 +20,49 @@ namespace shared.Blocks.Base
         [JsonExtensionData]
         public Dictionary<string, JsonElement>? ExtensionData { get; set; }
 
-        protected VibBlock() { }
-
         protected VibBlock(BlockType type)
         {
             Type = type;
+        }
+    }
+    [JsonConverter(typeof(BlockConverter))]
+    public abstract class Block
+    {
+        public abstract string Type { get; }
+        public Guid Identifier { get; set; }
+    }
+    public class BlockConverter : JsonConverter<VibBlock>
+    {
+        public override VibBlock? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        {
+            try
+            {
+                using var doc = JsonDocument.ParseValue(ref reader);
+                var root = doc.RootElement;
+
+                var type = root.GetProperty("Type").GetString();
+
+                Type concreteType = type switch
+                {
+                    nameof(BlockType.Start) => typeof(StartBlock),
+                    nameof(BlockType.Stop) => typeof(StopBlock),
+                    nameof(BlockType.Statement) => typeof(StatementBlock),
+                    nameof(BlockType.Conditional) => typeof(ConditionalBlock),
+                    nameof(BlockType.IO) => typeof(IOBlock),
+                    _ => throw new JsonException($"Unknown block type: {type}")
+                };
+
+                return (VibBlock?)JsonSerializer.Deserialize(root.GetRawText(), concreteType, options);
+            }
+            catch (KeyNotFoundException)
+            {
+                throw new JsonException("Block is missing required 'Type' discriminator.");
+            }
+        }
+
+        public override void Write(Utf8JsonWriter writer, VibBlock value, JsonSerializerOptions options)
+        {
+            JsonSerializer.Serialize(writer, (object)value, options);
         }
     }
 }

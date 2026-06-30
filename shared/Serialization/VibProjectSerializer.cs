@@ -9,17 +9,17 @@ namespace shared.Serialization
         public VibProjectSerializer()
             => throw new NotImplementedException();
 
-        public string Serialize(VibProject project) 
+        public string Serialize(VibProject project)
             => throw new NotImplementedException();
-        public VibProject Deserialize(string data) 
+        public VibProject Deserialize(string data)
             => throw new NotImplementedException();
-        private JsonObject SerializeMetadata(VibProject project) 
+        private JsonObject SerializeMetadata(VibProject project)
             => throw new NotImplementedException();
-        private JsonArray SerializeDocuments(VibProject project) 
+        private JsonArray SerializeDocuments(VibProject project)
             => throw new NotImplementedException();
-        private string DeSerializeMetaData(JsonObject metadata) 
+        private string DeSerializeMetaData(JsonObject metadata)
             => throw new NotImplementedException();
-        private List<VibDocument> DeSerializeDocuments(JsonArray documents) 
+        private List<VibDocument> DeSerializeDocuments(JsonArray documents)
             => throw new NotImplementedException();
     }
 }
