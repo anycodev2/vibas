@@ -1,29 +1,19 @@
 ﻿using shared.Blocks.Base;
 using shared.Documents;
+using System.Data;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
-using System.Text.Json.Serialization.Metadata;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace shared.Serialization
 {
     public class VibDocumentSerializer : IVibSerializer<VibDocument>
     {
-        public VibDocumentSerializer() {}
+        public VibDocumentSerializer() { }
 
         public string Serialize(VibDocument document)
         {
-            var options = new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            };
-
-            options.Converters.Add(new JsonStringEnumConverter());
-
-            string json = JsonSerializer.Serialize(document, options);
-
-            ArgumentNullException.ThrowIfNull(document);
+            string? json = JsonSerializer.Serialize<VibDocument>(document);
 
             return json;
         }
@@ -32,19 +22,33 @@ namespace shared.Serialization
             var options = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true,
-                Converters = { new JsonStringEnumConverter() }
+                Converters =
+                {
+                    new JsonStringEnumConverter(),
+                    new BlockConverter()
+                }
             };
 
-            try 
+            try
             {
-                VibDocument? doc = JsonSerializer.Deserialize<VibDocument>(data, options);
+                var blocksJson = JsonNode.Parse(data)!["blocks"]!.AsArray();
+                var blocks = DeserializeBlocks(blocksJson);
+                var blockMap = blocks.ToDictionary(block => block.Identifier);
 
-                if (doc == null)
-                    throw new JsonException("Deserialization returned null for VibDocument. Input may be 'null' or empty.");
+                var connectionsJson = JsonNode.Parse(data)!["connections"]!.AsArray();
+                var connections = DeserializeConnections(connectionsJson, blockMap);
 
-                return doc;
+                VibDocument? document = JsonSerializer.Deserialize<VibDocument>(data, options);
+
+                if (document == null)
+                    throw new JsonException("Deserialization returned null for VibDocument. Input might be null or empty.");
+
+                document.Blocks.AddRange(blocks);
+                document.Connections.AddRange(connections);
+
+                return document;
             }
-            catch(JsonException exception) 
+            catch (JsonException exception)
             {
                 throw new JsonException($"Failed to deserialize VibDocument: {exception.Message}");
             }
@@ -53,9 +57,47 @@ namespace shared.Serialization
             => throw new NotImplementedException();
         private JsonArray SerializeConnections(List<VibConnection> connections)
             => throw new NotImplementedException();
-        private List<VibBlock> DeserializeBlocks(JsonObject data)
-            => throw new NotImplementedException();
-        private List<VibConnection> DeserializeConnections(JsonArray data)
-            => throw new NotImplementedException();
+        private List<VibBlock> DeserializeBlocks(JsonArray data)
+        {
+            var blocks = new List<VibBlock>();
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+                Converters = { new BlockConverter() }
+            };
+
+            foreach (var node in data)
+            {
+                var block = JsonSerializer.Deserialize<VibBlock>(node!.ToJsonString(), options);
+                blocks.Add(block!);
+            }
+
+            return blocks;
+        }
+        private List<VibConnection> DeserializeConnections(JsonArray data, Dictionary<Guid, VibBlock> blockMap)
+        {
+            var connections = new List<VibConnection>();
+
+            foreach (var node in data)
+            {
+                var identifierId = Guid.Parse(node!["Identifier"]!.GetValue<string>());
+                var sourceId = Guid.Parse(node!["Source"]!.GetValue<string>());
+                var destinationId = Guid.Parse(node!["Destination"]!.GetValue<string>());
+                var type = Enum.Parse<VibConnectionType>(node!["Type"]!.GetValue<string>());
+
+                var sourceBlock = blockMap.GetValueOrDefault(sourceId);
+                var destinationBlock = blockMap.GetValueOrDefault(destinationId);
+
+                var connection = new VibConnection(sourceBlock, destinationBlock) 
+                { 
+                    Identifier = identifierId,
+                    Type = type
+                };
+                connections.Add(connection);
+            }
+
+            return connections;
+        }
     }
 }
