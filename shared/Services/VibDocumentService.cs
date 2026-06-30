@@ -1,24 +1,66 @@
 ﻿using shared.Documents;
 using shared.Serialization;
 using shared.Blocks.Base;
+using System.Text.Json;
+
 
 namespace shared.Services
 {
     public class VibDocumentService : VibFileService<VibDocument>
     {
         public VibDocumentService(IVibSerializer<VibDocument> serializer) : base(serializer) { }
-        
+
+        protected VibDocumentService() : base(null!) { }
         public override void Close(VibDocument document)
-            => throw new NotImplementedException();
+        {
+
+        }
 
         public override VibDocument Open(string filePath)
-            => throw new NotImplementedException();
+        {
+            if (!File.Exists(filePath))
+                throw new FileNotFoundException();
 
-        public override void Save(VibDocument document)
-            => throw new NotImplementedException();
+            var content = File.ReadAllText(filePath);
+            var document = Serializer.Deserialize(content);
+            document.FilePath = filePath;
+            return document;
+        }
+
+    public override void Save(VibDocument document)
+        {
+            if (document == null) 
+                throw new ArgumentNullException(nameof(document));
+
+            if (string.IsNullOrWhiteSpace(document.FilePath))
+                throw new ArgumentException("FilePath cannot be null or empty.", nameof(document.FilePath));
+
+            try
+            {
+                var content = Serializer.Serialize(document);
+                File.WriteAllText(document.FilePath, content);
+            }
+            catch (IOException ex)
+            {
+                throw new IOException($"An unexpected error during saving the document to '{document.FilePath}'.", ex);
+            }
+        }
 
         public void AddBlock(VibDocument document, VibBlock block)
         {
+            if (document == null) throw new ArgumentNullException(nameof(document));
+            if (block == null) throw new ArgumentNullException(nameof(block));
+
+            if (document.Blocks == null)
+            {
+                throw new InvalidOperationException("The document was not properly initialized.");
+            }
+
+            if (document.Blocks.Any(b => b.Identifier == block.Identifier))
+            {
+                throw new InvalidOperationException("Block already exists in the document.");
+            }
+
             document.Blocks.Add(block);
         }
 
@@ -28,13 +70,22 @@ namespace shared.Services
         }
 
         public void AddConnection(VibDocument document, VibConnection connection)
-            => throw new NotImplementedException();
+        {
+            document.Connections.Add(connection);
+        }
 
         public void RemoveConnection(VibDocument document, VibConnection connection)
-            => throw new NotImplementedException();
+        {
+            document.Connections.Remove(connection);
+        }
 
         public VibBlock GetBlock(VibDocument document, Guid blockId)
-            => throw new NotImplementedException();
+        {
+            var block = document.Blocks.FirstOrDefault(b => b.Identifier == blockId);
+            if (block == null)
+                throw new KeyNotFoundException();
+            return block;
+        }
 
     }
 }
