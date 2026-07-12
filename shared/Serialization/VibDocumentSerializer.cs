@@ -33,7 +33,6 @@ namespace shared.Serialization
         {
             var options = new JsonSerializerOptions
             {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                 Converters = { new BlockConverter() }
             };
 
