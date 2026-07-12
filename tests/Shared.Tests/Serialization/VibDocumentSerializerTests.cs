@@ -14,7 +14,7 @@ namespace Shared.Tests.Serialization
         [Fact]
         public void Serialize_ShouldReturnValidJson_WithNameVersionBlocksConnections()
         {
-            var doc = new VibDocument("algo.vib", "path/algo.vib");
+            var doc = new VibDocument("algo.vib", "path/algo.vib", "0.005");
 
             var json = _serializer.Serialize(doc);
             var node = JsonNode.Parse(json);
