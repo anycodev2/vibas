@@ -1,5 +1,6 @@
 ﻿using shared.Blocks.Types;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
 namespace shared.Blocks.Base
@@ -67,7 +68,18 @@ namespace shared.Blocks.Base
 
         public override void Write(Utf8JsonWriter writer, VibBlock value, JsonSerializerOptions options)
         {
-            JsonSerializer.Serialize(writer, (object)value, options);
+            var jsonNode = JsonSerializer.SerializeToNode((object)value, options);
+
+            if (jsonNode is JsonObject jsonObject)
+            {
+                jsonObject["$type"] = value.GetType().Name;
+
+                jsonObject.WriteTo(writer, options);
+            }
+            else
+            {
+                JsonSerializer.Serialize(writer, (object)value, options);
+            }
         }
     }
 }

@@ -56,7 +56,7 @@ namespace Shared.Tests.Serialization
             var node = JsonNode.Parse(json);
 
             var blocks = node!["blocks"]!.AsArray();
-            blocks.Should().AllSatisfy(b =>
+            blocks.Should().AllSatisfy(b => 
                 b!["$type"].Should().NotBeNull("every block needs a $type discriminator"));
         }
 
