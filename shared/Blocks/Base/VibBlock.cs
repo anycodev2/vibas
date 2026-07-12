@@ -40,7 +40,12 @@ namespace shared.Blocks.Base
                 using var doc = JsonDocument.ParseValue(ref reader);
                 var root = doc.RootElement;
 
-                var type = root.GetProperty("Type").GetString();
+                if (!root.TryGetProperty("Type", out var typeProp) && !root.TryGetProperty("type", out typeProp))
+                {
+                    throw new KeyNotFoundException();
+                }
+
+                var type = typeProp.GetString();
 
                 Type concreteType = type switch
                 {

@@ -426,12 +426,11 @@ namespace Shared.Tests.Serialization
             restored.Blocks.Should().HaveCount(3);
             restored.Blocks[0].Should().BeOfType<StartBlock>();
             restored.Blocks[1].Should().BeOfType<StopBlock>();
-            restored.Blocks[2].Should().BeOfType<StatementBlock>()
-                    .Which.Code.Should().Be("n = 10");
+            restored.Blocks[2].Should().BeOfType<StatementBlock>().Which.Code.Should().Be("n = 10");
 
             restored.Connections.Should().HaveCount(2);
-            restored.Connections[0].Source.Should().Be(start.Identifier);
-            restored.Connections[1].Destination.Should().Be(stop.Identifier);
+            restored.Connections[0].Source.Identifier.Should().Be(start.Identifier);
+            restored.Connections[1].Destination.Identifier.Should().Be(stop.Identifier);
         }
 
         [Fact]
