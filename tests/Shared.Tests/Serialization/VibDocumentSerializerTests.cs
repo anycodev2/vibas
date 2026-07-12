@@ -165,7 +165,7 @@ namespace Shared.Tests.Serialization
             var conn = node["connections"]!.AsArray()[0]!;
 
             conn["Source"]!.GetValue<string>().Should().Be(source.Identifier.ToString());
-            conn["Destination"]!.GetValue<string>().Should().Be(destination.ToString());
+            conn["Destination"]!.GetValue<string>().Should().Be(destination.Identifier.ToString());
             conn["Type"]!.GetValue<string>().Should().Be("Unconditional");
         }
 
