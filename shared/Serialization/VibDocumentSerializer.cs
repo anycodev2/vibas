@@ -13,6 +13,8 @@ namespace shared.Serialization
 
         public string Serialize(VibDocument document)
         {
+            ArgumentNullException.ThrowIfNull(document, "Failed to serialize VibDocument may be Null or empty");
+
             var options = new JsonSerializerOptions
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
