@@ -14,7 +14,7 @@ namespace Shared.Tests.Serialization
         [Fact]
         public void Serialize_ShouldReturnValidJson_WithNameVersionBlocksConnections()
         {
-            var doc = new VibDocument("algo.vib", "path/algo.vib");
+            var doc = new VibDocument("algo.vib", "path/algo.vib", "0.005");
 
             var json = _serializer.Serialize(doc);
             var node = JsonNode.Parse(json);
@@ -56,7 +56,7 @@ namespace Shared.Tests.Serialization
             var node = JsonNode.Parse(json);
 
             var blocks = node!["blocks"]!.AsArray();
-            blocks.Should().AllSatisfy(b =>
+            blocks.Should().AllSatisfy(b => 
                 b!["$type"].Should().NotBeNull("every block needs a $type discriminator"));
         }
 
@@ -165,7 +165,7 @@ namespace Shared.Tests.Serialization
             var conn = node["connections"]!.AsArray()[0]!;
 
             conn["Source"]!.GetValue<string>().Should().Be(source.Identifier.ToString());
-            conn["Destination"]!.GetValue<string>().Should().Be(destination.ToString());
+            conn["Destination"]!.GetValue<string>().Should().Be(destination.Identifier.ToString());
             conn["Type"]!.GetValue<string>().Should().Be("Unconditional");
         }
 
@@ -426,12 +426,11 @@ namespace Shared.Tests.Serialization
             restored.Blocks.Should().HaveCount(3);
             restored.Blocks[0].Should().BeOfType<StartBlock>();
             restored.Blocks[1].Should().BeOfType<StopBlock>();
-            restored.Blocks[2].Should().BeOfType<StatementBlock>()
-                    .Which.Code.Should().Be("n = 10");
+            restored.Blocks[2].Should().BeOfType<StatementBlock>().Which.Code.Should().Be("n = 10");
 
             restored.Connections.Should().HaveCount(2);
-            restored.Connections[0].Source.Should().Be(start.Identifier);
-            restored.Connections[1].Destination.Should().Be(stop.Identifier);
+            restored.Connections[0].Source.Identifier.Should().Be(start.Identifier);
+            restored.Connections[1].Destination.Identifier.Should().Be(stop.Identifier);
         }
 
         [Fact]
