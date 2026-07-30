@@ -25,7 +25,7 @@ namespace Shared.Tests.Serialization
             var node = JsonNode.Parse(json);
 
             node.Should().NotBeNull();
-            node!["name"]!.GetValue<string>().Should().Be("MyProject");
+            node!["name"]!.GetValue<string>().Should().Be("MyProject.vibproj");
             node["version"]!.GetValue<string>().Should().Be("1.2.3");
 
             var docs = node["documents"]!.AsArray();

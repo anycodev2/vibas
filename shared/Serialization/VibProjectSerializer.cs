@@ -13,14 +13,47 @@ namespace shared.Serialization
 
         public string Serialize(VibProject project)
         {
-            string json = JsonSerializer.Serialize(project);
+            if (project == null)
+            {
+                throw new ArgumentNullException(nameof(project));
+            }
 
-            return json;
+            var jsonObject = SerializeMetadata(project);
+            jsonObject["documents"] = SerializeDocuments(project);
+
+            return jsonObject.ToJsonString();
         }
         private JsonObject SerializeMetadata(VibProject project)
-        => throw new NotImplementedException();
+        {
+            var metadata = new JsonObject
+            {
+                ["name"] = project.FileName
+            };
+
+            if (project.Version != null)
+            {
+                metadata["version"] = project.Version;
+            }
+
+            return metadata;
+        }
         private JsonArray SerializeDocuments(VibProject project)
-            => throw new NotImplementedException();
+        {
+            var documentsArray = new JsonArray();
+
+            if (project.Documents != null)
+            {
+                foreach (var doc in project.Documents)
+                {
+                    if (!string.IsNullOrEmpty(doc?.FilePath))
+                    {
+                        documentsArray.Add(doc.FilePath);
+                    }
+                }
+            }
+
+            return documentsArray;
+        }
         public VibProject Deserialize(string data)
         {
             var options = new JsonSerializerOptions
