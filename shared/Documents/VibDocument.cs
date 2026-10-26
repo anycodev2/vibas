@@ -5,6 +5,7 @@ namespace shared.Documents
 {
     public class VibDocument
     {
+        [JsonPropertyName("name")]
         public string? FileName { get; set; }
         public string? FilePath { get; set; }
         public bool isModified { get; set; }
