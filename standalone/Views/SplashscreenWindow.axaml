@@ -7,9 +7,4 @@
         SystemDecorations="None"
         CanResize="False"
         ShowInTaskbar="False">
-
-	<Border Background="#151515" CornerRadius="50">
-		
-	</Border>
-
 </Window>
