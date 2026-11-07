@@ -1,10 +1,48 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="standalone.Views.SplashscreenWindow"
-        Width="500"
-        Height="300"
         WindowStartupLocation="CenterScreen"
         SystemDecorations="None"
-        CanResize="False"
-        ShowInTaskbar="False">
+        CanResize="true"
+        ShowInTaskbar="True"
+        Background="Transparent"
+        Width="1200"
+        Height="647">
+
+        <Border CornerRadius="8"
+                Background="White"
+                ClipToBounds="True">
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="52"></RowDefinition>
+                        <RowDefinition Height="32"></RowDefinition>
+                        <RowDefinition Height="504"></RowDefinition>
+                        <RowDefinition Height="61"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Background="Transparent">
+                        <TextBlock Text="Vibas" Foreground="Black"
+                                   FontSize="24" VerticalAlignment="Center"
+                                   Margin="17,0,0,0"/>
+
+                        <StackPanel Orientation="Horizontal"
+                                    Spacing="30"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,16,0">
+
+                            <Button Content="—" Width="32" Height="32"
+                                    BorderThickness="1" BorderBrush="Black"
+                                    Foreground="Black"/>
+                            <Button Content="▢" Width="32" Height="32"
+                                    BorderThickness="1" BorderBrush="Black"
+                                    Foreground="Black"/>
+                            <Button Content="✕" Width="32" Height="32"
+                                    BorderThickness="1" BorderBrush="Black"
+                                    Foreground="Black"/>
+                        </StackPanel>
+                    </Grid>
+                </Grid>
+        </Border>
 </Window>

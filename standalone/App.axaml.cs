@@ -29,14 +29,14 @@ namespace standalone
 
                 splashScreen.KeyDown += (_, e) =>
                 {
-                    if (e.Key == Key.Space)
+                    if (e.Key == Key.Escape)
                     {
-                        var mainWindow = new MainWindow
-                        {
-                            DataContext = new MainWindowViewModel(),
-                        };
-                        desktop.MainWindow = mainWindow;
-                        mainWindow.Show();
+                        //var mainWindow = new MainWindow
+                        //{
+                        //    DataContext = new MainWindowViewModel(),
+                        //};
+                        //desktop.MainWindow = mainWindow;
+                        //mainWindow.Show();
                         splashScreen.Close();
                     }
                 };
