@@ -12,9 +12,15 @@ namespace standalone
 {
     public partial class App : Application
     {
+        // https://github.com/AvaloniaUI/Avalonia.Diagnostics#avaloniadiagnostics-legacy
+        // that's why I had to change class below
+        // when app is running press F12 for DevTools
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
+        #if DEBUG
+            this.AttachDeveloperTools();
+        #endif
         }
 
         public override void OnFrameworkInitializationCompleted()
