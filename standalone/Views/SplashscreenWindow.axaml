@@ -9,6 +9,12 @@
         Width="1200"
         Height="647">
 
+        <Window.Resources>
+            <FontFamily x:Key="FontKoho">avares://standalone/Assets/Fonts#KoHo</FontFamily>
+            <FontFamily x:Key="FontInter">avares://standalone/Assets/Fonts#Inter</FontFamily>
+            <FontFamily x:Key="FontJetBrains">avares://standalone/Assets/Fonts#JetBrains</FontFamily>        
+        </Window.Resources>
+
         <Border CornerRadius="16"
                 Background="White"
                 ClipToBounds="True">
@@ -24,7 +30,7 @@
                     <Grid Grid.Row="0" Background="Transparent">
                         <TextBlock Text="Vibas" Foreground="Black"
                                    FontSize="24" VerticalAlignment="Center"
-                                   Margin="17,0,0,0"/>
+                                   Margin="17,0,0,0" FontFamily="{StaticResource FontKoho}"/>
 
                         <StackPanel Orientation="Horizontal" Spacing="5"
                                     HorizontalAlignment="Right" VerticalAlignment="Center">
