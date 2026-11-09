@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 
@@ -21,11 +22,16 @@ public partial class SplashscreenWindow : Window
         => SetActive(ButtonCommunity);
     private void SetActive(Button active)
     {
-        foreach (var button in new[] {ButtonRecentProjects, ButtonCommunity})
+        foreach (var button in new[] { ButtonRecentProjects, ButtonCommunity })
         {
             bool isActive = button == active;
             button.Background = isActive ? ActiveBackground : InactiveBackground;
             button.Foreground = isActive ? ActiveForeground : InactiveForeground;
         }
+    }
+    private void TitleBar_holdToDrag(object? sender, PointerPressedEventArgs e)
+    {
+        if (e.GetCurrentPoint(this).Properties.IsLeftButtonPressed)
+            BeginMoveDrag(e);
     }
 }

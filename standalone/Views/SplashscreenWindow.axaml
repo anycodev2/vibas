@@ -44,7 +44,7 @@
                         <RowDefinition Height="61"></RowDefinition>
                     </Grid.RowDefinitions>
 
-                    <Grid Grid.Row="0" Background="Transparent">
+                    <Grid Grid.Row="0" Background="Transparent" PointerPressed="Titlebar_holdToDrag">
                         <TextBlock Foreground="Black"
                                    FontSize="24" VerticalAlignment="Center"
                                    Margin="17,0,0,0" FontFamily="{StaticResource FontKoho}">
