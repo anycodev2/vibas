@@ -3,6 +3,7 @@
         x:Class="standalone.Views.SplashscreenWindow"
         WindowStartupLocation="CenterScreen"
         SystemDecorations="None"
+        Icon="../Assets/Icons/logo.png"
         CanResize="true"
         ShowInTaskbar="True"
         Background="Transparent"
