@@ -24,10 +24,9 @@ public partial class SplashscreenWindow : Window
     private void ButtonClick_minimize(object? sender, RoutedEventArgs e)
         => WindowState = WindowState.Minimized;
     private void ButtonClick_maximize(object? sender, RoutedEventArgs e)
-    {
-        // need to change button to togglebutton
-        return;
-    }
+        => WindowState = WindowState == WindowState.Maximized
+            ? WindowState.Normal
+            : WindowState.Maximized;
     private void ButtonClick_exit(object? sender, RoutedEventArgs e)
         => Close();
     private void ButtonClick_recentProjects(object? sender, RoutedEventArgs e)
