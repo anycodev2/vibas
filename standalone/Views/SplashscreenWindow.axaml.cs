@@ -40,6 +40,9 @@ public partial class SplashscreenWindow : Window
             bool isActive = button == active;
             button.Background = isActive ? ActiveBackground : InactiveBackground;
             button.Foreground = isActive ? ActiveForeground : InactiveForeground;
+
+            if (isActive) button.Classes.Add("active");
+            else button.Classes.Remove("active");
         }
     }
 }
