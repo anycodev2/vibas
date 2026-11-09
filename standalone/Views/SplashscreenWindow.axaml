@@ -50,7 +50,7 @@
             </Style>
         </Window.Styles>
 
-        <Border CornerRadius="16"
+        <Border CornerRadius="8"
                 Background="White"
                 ClipToBounds="True">
 
@@ -72,15 +72,15 @@
                         <StackPanel Orientation="Horizontal"
                                     HorizontalAlignment="Right" VerticalAlignment="Center">
 
-                            <Button Width="52" Height="52" Classes="hover_backgroundSetGray hover_cursorToHand"
+                            <Button Width="62" Height="52" Classes="hover_backgroundSetGray hover_cursorToHand"
                                     x:Name="ButtonMinimize" Click="ButtonClick_minimize">
                                 <PathIcon Data="{StaticResource IconMinimize}" Width="12" Height="12" Foreground="Black"/>
                             </Button>
-                            <Button Width="52" Height="52" Classes="hover_backgroundSetGray hover_cursorToHand"
+                            <Button Width="62" Height="52" Classes="hover_backgroundSetGray hover_cursorToHand"
                                     x:Name="ButtonMaximize" Click="ButtonClick_maximize">
                                 <PathIcon Data="{StaticResource IconMaximize}" Width="12" Height="12" Foreground="Black"/>
                             </Button>
-                            <Button Width="52" Height="52" Classes="hover_backgroundSetGray hover_cursorToHand"
+                            <Button Width="62" Height="52" Classes="hover_backgroundSetGray hover_cursorToHand"
                                     x:Name="ButtonExit" Click="ButtonClick_exit">
                                 <PathIcon Data="{StaticResource IconExit}" Width="12" Height="12" Foreground="Black"/>
                             </Button>
@@ -98,7 +98,7 @@
                                     x:Name="ButtonRecentProjects" Click="ButtonClick_recentProjects">
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="10">
                                     <Path Classes="icon" Data="{StaticResource IconClock}"/>
-                                    <TextBlock Text="Recent projects" FontFamily="{StaticResource FontInter}"/>
+                                    <TextBlock Text="Recent projects" FontFamily="{StaticResource FontInter}" FontSize="14"/>
                                 </StackPanel>
                             </Button>
                             <Button Width="121" Height="32" CornerRadius="8"
@@ -107,7 +107,7 @@
                                     x:Name="ButtonCommunity" Click="ButtonClick_community">
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="10">
                                     <Path Classes="icon" Data="{StaticResource IconPeople}"/>
-                                    <TextBlock Text="Community" FontFamily="{StaticResource FontInter}"/>
+                                    <TextBlock Text="Community" FontFamily="{StaticResource FontInter}" FontSize="14"/>
                                 </StackPanel>
                             </Button>
                         </StackPanel>
