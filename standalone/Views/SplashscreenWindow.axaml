@@ -72,14 +72,16 @@
                                     Margin="10">
 
                             <Button Width="149" Height="32" CornerRadius="8"
-                                    Foreground="White" Background="#22A7F2">
+                                    Foreground="White" Background="#22A7F2"
+                                    x:Name="ButtonRecentProjects" Click="ButtonClick_recentProjects">
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="10">
                                     <Path Classes="icon" Data="{StaticResource IconClock}"/>
                                     <TextBlock Text="Recent projects" FontFamily="{StaticResource FontInter}"/>
                                 </StackPanel>
                             </Button>
                             <Button Width="121" Height="32" CornerRadius="8"
-                                    Foreground="Black">
+                                    Foreground="Black" Background="White"
+                                    x:Name="ButtonCommunity" Click="ButtonClick_community">
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="10">
                                     <Path Classes="icon" Data="{StaticResource IconPeople}"/>
                                     <TextBlock Text="Community" FontFamily="{StaticResource FontInter}"/>
