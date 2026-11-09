@@ -28,10 +28,12 @@
                     </Grid.RowDefinitions>
 
                     <Grid Grid.Row="0" Background="Transparent">
-                        <TextBlock Text="Vibas" Foreground="Black"
+                        <TextBlock Foreground="Black"
                                    FontSize="24" VerticalAlignment="Center"
-                                   Margin="17,0,0,0" FontFamily="{StaticResource FontKoho}"/>
-
+                                   Margin="17,0,0,0" FontFamily="{StaticResource FontKoho}">
+                            <Underline>v</Underline>ibas
+                        </TextBlock>
+                        
                         <StackPanel Orientation="Horizontal" Spacing="5"
                                     HorizontalAlignment="Right" VerticalAlignment="Center">
 
@@ -39,10 +41,10 @@
                                 <Image Source="../Assets/Icons/minimize.png" Width="12" Height="12"/>
                             </Button>
                             <Button Width="52" Height="52">
-                                <Image Source="../Assets/Icons/maximize.png" Width="24" Height="24"/>
+                                <Image Source="../Assets/Icons/maximize.png" Width="12" Height="12"/>
                             </Button>
                             <Button Width="52" Height="52">
-                                <Image Source="../Assets/Icons/exit.png" Width="24" Height="24"/>
+                                <Image Source="../Assets/Icons/exit.png" Width="12" Height="12"/>
                             </Button>
                         </StackPanel>
                     </Grid>
@@ -53,17 +55,17 @@
                                     Margin="10">
 
                             <Button Width="149" Height="32"
-                                    Foreground="Black" Background="#22A7F2">
+                                    Foreground="white" Background="#22A7F2">
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="10">
                                     <Image Source="../Assets/Icons/clock.png" Width="16" Height="16"/>
-                                    <TextBlock Text="Recent projects"/>
+                                    <TextBlock Text="Recent projects" FontFamily="{StaticResource FontInter}"/>
                                 </StackPanel>
                             </Button>
                             <Button Width="121" Height="32"
                                     Foreground="Black">
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Spacing="10">
                                     <Image Source="../Assets/Icons/people.png" Width="16" Height="16"/>
-                                    <TextBlock Text="Community"/>
+                                    <TextBlock Text="Community" FontFamily="{StaticResource FontInter}"/>
                                 </StackPanel>
                             </Button>
                         </StackPanel>
