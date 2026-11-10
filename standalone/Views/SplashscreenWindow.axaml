@@ -33,7 +33,10 @@
             </Style>
             <Style Selector="Button.hover_backgroundSetGray:pointerover /template/ ContentPresenter#PART_ContentPresenter">
                 <Setter Property="Background" Value="#DAE2DF"/>
-                <Setter Property="Foreground" Value="Black"/>
+            </Style>
+            <Style Selector="Button.hover_backgroundSetRed:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="#F16464"/>
+                
             </Style>
             <Style Selector="Button.hover_cursorToHand:pointerover /template/ ContentPresenter#PART_ContentPresenter">
                 <Setter Property="Cursor" Value="hand"/>
@@ -80,7 +83,7 @@
                                     x:Name="ButtonMaximize" Click="ButtonClick_maximize">
                                 <PathIcon Data="{StaticResource IconMaximize}" Width="12" Height="12" Foreground="Black"/>
                             </Button>
-                            <Button Width="62" Height="52" Classes="hover_backgroundSetGray hover_cursorToHand"
+                            <Button Width="62" Height="52" Classes="hover_backgroundSetRed hover_cursorToHand"
                                     x:Name="ButtonExit" Click="ButtonClick_exit">
                                 <PathIcon Data="{StaticResource IconExit}" Width="12" Height="12" Foreground="Black"/>
                             </Button>
