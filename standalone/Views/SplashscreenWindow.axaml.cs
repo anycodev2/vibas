@@ -1,7 +1,9 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using Avalonia.VisualTree;
 
 namespace standalone.Views;
 
@@ -15,6 +17,19 @@ public partial class SplashscreenWindow : Window
     public SplashscreenWindow()
     {
         InitializeComponent();
+
+        AddHandler(PointerPressedEvent, UnfocusTextBox,
+                   RoutingStrategies.Bubble, handledEventsToo: true);
+    }
+    private void UnfocusTextBox(object? sender, PointerPressedEventArgs e)
+    {
+        if (FocusManager?.GetFocusedElement() is not TextBox)
+            return;
+
+        if (e.Source is Visual v && v.FindAncestorOfType<TextBox>(includeSelf: true) != null)
+            return;
+
+        FocusManager.ClearFocus();
     }
     private void TitleBar_holdToDrag(object? sender, PointerPressedEventArgs e)
     {
@@ -30,7 +45,7 @@ public partial class SplashscreenWindow : Window
     private void ButtonClick_exit(object? sender, RoutedEventArgs e)
         => Close();
     private void ButtonClick_recentProjects(object? sender, RoutedEventArgs e)
-    => SetActive(ButtonRecentProjects);
+        => SetActive(ButtonRecentProjects);
     private void ButtonClick_community(object? sender, RoutedEventArgs e)
         => SetActive(ButtonCommunity);
     private void SetActive(Button active)
